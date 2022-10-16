@@ -25,10 +25,10 @@
         </a>
     </li>
     <li class="nav-item">
-        <a href="{{ url('kontak-guru') }}" class="nav-link">
+        <a href="{{ url('siswa') }}" class="nav-link">
             <i class="nav-icon fas fa-database"></i>
             <p>
-                Data Master
+                Siswa
             </p>
         </a>
     </li>
@@ -36,7 +36,7 @@
         <a href="{{ url('kontak-guru') }}" class="nav-link">
             <i class="nav-icon fas fa-credit-card"></i>
             <p>
-                Tunggakan Siswa
+                Guru
             </p>
         </a>
     </li>
@@ -44,7 +44,7 @@
         <a href="{{ url('kontak-guru') }}" class="nav-link">
             <i class="nav-icon fas fa-file"></i>
             <p>
-                Laporan
+                Wali Murid
             </p>
         </a>
     </li>

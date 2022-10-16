@@ -4,6 +4,7 @@ use App\Http\Controllers\Beranda;
 use App\Http\Controllers\KontakGuruController;
 use App\Http\Controllers\LayoutController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WaliKelas;
 use Illuminate\Support\Facades\Route;
@@ -38,6 +39,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::resource('beranda', Beranda::class);
         Route::resource('kontak-guru', KontakGuruController::class);
         Route::resource('user', UserController::class);
+        Route::resource('siswa', SiswaController::class);
     });
     Route::group(['middleware' => ['cekUserLogin:2']], function () {
         Route::resource('wali-kelas', WaliKelas::class);
