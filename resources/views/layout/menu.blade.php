@@ -33,7 +33,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a href="{{ url('kontak-guru') }}" class="nav-link">
+        <a href="{{ url('guru') }}" class="nav-link">
             <i class="nav-icon fas fa-credit-card"></i>
             <p>
                 Guru

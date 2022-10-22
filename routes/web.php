@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Beranda;
+use App\Http\Controllers\GuruController;
 use App\Http\Controllers\KontakGuruController;
 use App\Http\Controllers\LayoutController;
 use App\Http\Controllers\LoginController;
@@ -40,6 +41,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::resource('kontak-guru', KontakGuruController::class);
         Route::resource('user', UserController::class);
         Route::resource('siswa', SiswaController::class);
+        Route::resource('guru', GuruController::class);
     });
     Route::group(['middleware' => ['cekUserLogin:2']], function () {
         Route::resource('wali-kelas', WaliKelas::class);
