@@ -8,11 +8,19 @@
 </li>
 
 @if ($user->level == 1)
-    <li class="nav-item">
+    {{-- <li class="nav-item">
         <a href="{{ url('kontak-guru') }}" class="nav-link">
             <i class="nav-icon fas fa-user"></i>
             <p>
                 Kontak Guru
+            </p>
+        </a>
+    </li> --}}
+    <li class="nav-item">
+        <a href="{{ url('guru') }}" class="nav-link">
+            <i class="nav-icon fas fa-user"></i>
+            <p>
+                Guru
             </p>
         </a>
     </li>
@@ -32,16 +40,9 @@
             </p>
         </a>
     </li>
+ 
     <li class="nav-item">
-        <a href="{{ url('guru') }}" class="nav-link">
-            <i class="nav-icon fas fa-credit-card"></i>
-            <p>
-                Guru
-            </p>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="{{ url('kontak-guru') }}" class="nav-link">
+        <a href="{{ url('wali-murid') }}" class="nav-link">
             <i class="nav-icon fas fa-file"></i>
             <p>
                 Wali Murid

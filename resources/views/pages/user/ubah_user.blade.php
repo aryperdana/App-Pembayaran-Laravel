@@ -23,10 +23,6 @@
                 <input type="text" class="form-control" name="username" id="username" value="{{ $data->username }}" placeholder="Masukan Username">
             </div>
             <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" class="form-control" name="password" id="password" placeholder="Masukan Password">
-            </div>
-            <div class="form-group">
                 <label for="email">Email</label>
                 <input type="email" class="form-control" name="email" value="{{ $data->email }}" id="email" placeholder="Masukan Email">
             </div>
@@ -34,8 +30,8 @@
                 <label for="level">Role</label>
                 <select class="form-control" id="level"  name="level" selected="{{ $data->level }}">
                     <option value="none">Pilih Role</option>
-                    <option value="1">Bendahara</option>
-                    <option value="2">Wali Kelas</option>
+                    <option value="1" {{ ( $data->level == 1) ? 'selected' : '' }}>Bendahara</option>
+                    <option value="2" {{ ( $data->level == 2) ? 'selected' : '' }}>Wali Kelas</option>
                 </select>
               </div>
         </div>
