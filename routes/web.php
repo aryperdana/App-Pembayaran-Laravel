@@ -2,10 +2,13 @@
 
 use App\Http\Controllers\Beranda;
 use App\Http\Controllers\GuruController;
+use App\Http\Controllers\JenisTagihanController;
+use App\Http\Controllers\KelasController;
 use App\Http\Controllers\KontakGuruController;
 use App\Http\Controllers\LayoutController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\TagihanSppController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WaliKelas;
 use App\Http\Controllers\WaliMuridController;
@@ -44,6 +47,9 @@ Route::group(['middleware' => ['auth']], function () {
         Route::resource('siswa', SiswaController::class);
         Route::resource('guru', GuruController::class);
         Route::resource('wali-murid', WaliMuridController::class);
+        Route::resource('jenis-tagihan', JenisTagihanController::class);
+        Route::resource('tagihan-spp', TagihanSppController::class);
+        Route::resource('kelas', KelasController::class);
     });
     Route::group(['middleware' => ['cekUserLogin:2']], function () {
         Route::resource('wali-kelas', WaliKelas::class);

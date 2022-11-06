@@ -49,4 +49,40 @@
             </p>
         </a>
     </li>
+
+    <li class="nav-item">
+        <a href="{{ url('jenis-tagihan') }}" class="nav-link">
+            <i class="nav-icon fas fa-file"></i>
+            <p>
+                Jenis Tagihan
+            </p>
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a href="{{ url('kelas') }}" class="nav-link">
+            <i class="nav-icon fas fa-file"></i>
+            <p>
+                Kelas
+            </p>
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a href="{{ url('tagihan-spp') }}" class="nav-link">
+            <i class="nav-icon fas fa-file"></i>
+            <p>
+                Tagihan SPP
+            </p>
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a href="{{ url('wali-murid') }}" class="nav-link">
+            <i class="nav-icon fas fa-file"></i>
+            <p>
+                Pembayaran
+            </p>
+        </a>
+    </li>
 @endif
