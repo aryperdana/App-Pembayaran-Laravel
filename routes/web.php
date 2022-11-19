@@ -10,7 +10,6 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\TagihanSppController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\WaliKelas;
 use App\Http\Controllers\WaliMuridController;
 use Illuminate\Support\Facades\Route;
 
@@ -39,6 +38,7 @@ Route::controller(LoginController::class)->group(function () {
     Route::get('logout', 'logout');
 });
 
+
 Route::group(['middleware' => ['auth']], function () {
     Route::group(['middleware' => ['cekUserLogin:1']], function () {
         Route::resource('beranda', Beranda::class);
@@ -49,9 +49,10 @@ Route::group(['middleware' => ['auth']], function () {
         Route::resource('wali-murid', WaliMuridController::class);
         Route::resource('jenis-tagihan', JenisTagihanController::class);
         Route::resource('tagihan-spp', TagihanSppController::class);
+        Route::get('/tagihan-spp/kelas/{id}', [TagihanSppController::class, 'kelas']);
         Route::resource('kelas', KelasController::class);
     });
     Route::group(['middleware' => ['cekUserLogin:2']], function () {
-        Route::resource('wali-kelas', WaliKelas::class);
+        // Route::resource('wali-kelas', WaliKelas::class);
     });
 });

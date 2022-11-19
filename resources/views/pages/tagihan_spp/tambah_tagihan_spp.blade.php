@@ -10,47 +10,197 @@
     <a href="{{ route('tagihan-spp.index')}}" class="btn btn-sm btn-outline-secondary"><i class="fas fa-arrow-left mr-2"></i>Kembali</a>
 </div>
 <div class="card">
-    <form action="{{ route('tagihan-spp.store') }}" method="POST" enctype="multipart/form-data">
+    {{-- <form action="{{ route('tagihan-spp.store') }}" method="POST" enctype="multipart/form-data"> --}}
         @csrf
         <div class="card-body">
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
-                        <label for="nama_siswa">Siswa</label>
-                        <input type="text" class="form-control" name="nama_siswa" id="nama_siswa" placeholder="Masukan Tagihan SPP">
+                        <label for="id_jenis_tagihan">Jenis Tagihan</label>
+                        <select class="form-control" id="id_jenis_tagihan" name="id_jenis_tagihan">
+                            <option value="none">Pilih Jenis Tagihan</option>
+                            @foreach ($jenis_tagihan as $item)
+                                <option value="{{ $item->id }}">{{ $item->nama_jenis_tagihan }}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="nama_siswa">Kelas</label>
-                        <input type="text" class="form-control" name="nama_siswa" id="nama_siswa" placeholder="Masukan Tagihan SPP">
+                        <label for="semester">Semester</label>
+                        <select class="form-control" id="semester" name="semester">
+                            <option value="none">Pilih Semester</option>
+                            <option value="ganjil">Ganjil</option>
+                            <option value="genap">Genap</option>
+                        </select>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="keterangan">Semester</label>
-                        <input type="text" class="form-control" name="keterangan" id="keterangan" placeholder="Masukan Keterangan">
+                        <label for="bulan">Semester</label>
+                        <select class="form-control" id="bulan" name="bulan">
+                            <option value="none">Pilih Bulan</option>
+                            <option value="1">Januari</option>
+                            <option value="2">Februari</option>
+                            <option value="3">Maret</option>
+                            <option value="4">April</option>
+                            <option value="5">Mei</option>
+                            <option value="6">Juni</option>
+                            <option value="7">Juli</option>
+                            <option value="8">Agustus</option>
+                            <option value="9">September</option>
+                            <option value="10">Oktober</option>
+                            <option value="11">November</option>
+                            <option value="12">Desember</option>
+                        </select>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="nama_siswa">Bulan</label>
-                        <input type="text" class="form-control" name="nama_siswa" id="nama_siswa" placeholder="Masukan Tagihan SPP">
+                        <label for="id_kelas">Kelas</label>
+                        <select class="form-control getKelas" id="id_kelas" name="id_kelas">
+                            <option value="none">Pilih Kelas</option>
+                            @foreach ($kelas as $item)
+                            <option value="{{ $item->id }}">{{ $item->kode_kelas }}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="keterangan">Total</label>
-                        <input type="text" class="form-control" name="keterangan" id="keterangan" placeholder="Masukan Keterangan">
+                        <label for="harga">Harga</label>
+                        <input type="text" class="form-control" name="harga" id="harga" placeholder="Masukan Harga">
                     </div>
                 </div>
             </div>
+
+            <div class="row">
+                <table class="table table-bordered table-hover text-nowrap" id="table_siswa">
+                    <thead>
+                        <tr>
+                        <th scope="col" class="text-center" style="width: 30px">No.</th>
+                        <th scope="col" class="text-center">Nama Siswa</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listSiswa">
+                    </tbody>
+                </table>
+            </div>
+
         </div>
 
+        
+
         <div class="card-footer">
-            <button type="submit" class="btn btn-primary">Simpan</button>
+            <button class="btn btn-primary" id="simpan">Simpan</button>
         </div>
-    </form>
+    {{-- </form> --}}
 </div>
+
+<script>
+    $(document).ready(function () {
+        let dataListGlobal = []
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+            }
+        });
+
+        $('#listSiswa').append("<tr>\
+                <td colSpan='2' class='text-center align-middle' height='100'><b>Pilih Kelas</b></td>\
+                </tr>");
+
+        
+        $(document).on('change', ".getKelas", function () {
+            let id_kelas = $("#id_kelas").val();
+
+            if (id_kelas !== 'none') {   
+                $.ajax({
+                    type:"GET",
+                    dataType:"json",
+                    url: 'kelas/' + id_kelas,
+                    success:function(response){
+                        let dataList = [];
+
+                        response.data.map((val) => {
+                            const obj = {
+                                id_siswa: val.id_siswa,
+                                nama_siswa: response.siswa.find((res) => val.id_siswa === res.id).nama_siswa
+                            }
+                            
+                            dataList.push(obj)
+                        })
+
+                        dataListGlobal.push(...dataList)
+
+                        $.each(dataList, function (key, value) {
+                     
+							$('#listSiswa').replaceWith("<tr>\
+                                        <td>"+parseInt(key + 1)+"</td>\
+										<td>"+value.nama_siswa+"</td>\
+										</tr>");
+						})
+                    }
+                }) 
+            }  
+        });
+
+
+        $(document).on('click', "#simpan", function () {
+            let id_jenis_tagihan = $("#id_jenis_tagihan").val();
+            let id_kelas = $("#id_kelas").val();
+            let bulan = $("#bulan").val();
+            let semester = $("#semester").val();
+            let harga = $("#harga").val();
+            let no_tagihan = "1234";
+            let keterangan = "cekk 123"
+            
+
+            let dataDetail = dataListGlobal.map((val) => {
+                return {
+                    id_siswa: val.id_siswa,
+                    id_jenis_tagihan: id_jenis_tagihan,
+                    harga: harga,
+                    status_pembayaran: 0,
+                }
+            });
+
+            console.log({
+                    id_kelas : id_kelas,
+                    bulan : bulan,
+                    semester : semester,
+                    harga : harga,
+                    no_tagihan : no_tagihan,
+                    keterangan : keterangan,
+                    detail_tagihan : dataDetail,
+                });
+
+
+            $.ajax({
+                type: "post",
+                url: "{{ route('tagihan-spp.store') }}",
+                data: {
+                    id_kelas : id_kelas,
+                    bulan : bulan,
+                    semester : semester,
+                    harga : harga,
+                    no_tagihan : no_tagihan,
+                    keterangan : keterangan,
+                    detail_tagihan : dataDetail,
+                    "_token" : "{{ csrf_token() }}"
+                },
+                success: function (res) {
+                    window.location.href = "{{url('/tagihan-spp')}}";
+                },
+                error: function (err) {
+                    console.error(err);
+                }
+            });
+        });
+
+    });
+</script>
+
 
 @endsection

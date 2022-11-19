@@ -36,7 +36,7 @@
                     <option value="1">Bendahara</option>
                     <option value="2">Wali Kelas</option>
                 </select>
-              </div>
+            </div>
         </div>
 
         <div class="card-footer">

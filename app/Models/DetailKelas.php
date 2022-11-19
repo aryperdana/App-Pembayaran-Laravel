@@ -15,4 +15,9 @@ class DetailKelas extends Model
     {
         return $this->belongsTo(Kelas::class, 'id_kelas');
     }
+
+    // public function siswa()
+    // {
+    //     return $this->belongsTo(Siswa::class, 'id_siswa')->withPivot('nama_siswa');
+    // }
 }

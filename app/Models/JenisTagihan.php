@@ -10,4 +10,10 @@ class JenisTagihan extends Model
     use HasFactory;
     protected $table = 'jenis_tagihans';
     protected $guarded = ['id'];
+
+
+    public function detailTagihanSpp()
+    {
+        return $this->hasOne(DetailTagihanSPP::class);
+    }
 }

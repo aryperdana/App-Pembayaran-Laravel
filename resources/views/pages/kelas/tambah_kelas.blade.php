@@ -65,7 +65,7 @@
                 </thead>
                 <tbody>
                    <tr>
-                    <td contenteditable="true">1</td>
+                    <td>1</td>
                     <td>
                         <div class="form-group">
                             <select class="form-control id_siswa" id="id_siswa" name="id_siswa">
@@ -99,16 +99,12 @@
 
         $(document).on('click', '#tambah', function () {
             baris = baris + 1
-            var dataId = '';
-            console.log("test");
 
             var html = "<tr id='baris'" +baris+ ">"
                 html += "   <td>" +baris+ "</td>"
-                // html += "   <td contenteditable='true' class='id_siswa'></td>"
                 html += '<td><select name="id_siswa" class="form-control id_siswa" id="id_siswa"><option value="">Pilih Siswa</option><@foreach($siswa as $item)<option value="{{$item->id}}">{{$item->nama_siswa}}</option>@endforeach></select></td>'
                 html += "   <td>    <button class='btn btn-sm btn-danger' data-row='baris' " +baris+ " id='hapus'>   <i class='fas fa-trash'></i>    </button>   </td>"
-                html += "</tr>"
-                
+                html += "</tr>"  
 
                 $('#table_siswa').append(html);
         });
@@ -125,11 +121,11 @@
             let tahun_ajaran = $("#tahun_ajaran").val();
             let semester = $("#semester").val();
 
-            let id_siswa = []
+            let dataSiswa = []
+            // let nama_siswa
 
             $('.id_siswa').each(function () {
-                id_siswa.push(this.value)
-                
+                dataSiswa.push(this.value)
             });
 
 
@@ -141,7 +137,7 @@
                     id_guru : id_guru,
                     tahun_ajaran : tahun_ajaran,
                     semester : semester,
-                    detail_kelas : id_siswa,
+                    detail_kelas : dataSiswa,
                     "_token" : "{{ csrf_token() }}"
                 },
                 success: function (res) {

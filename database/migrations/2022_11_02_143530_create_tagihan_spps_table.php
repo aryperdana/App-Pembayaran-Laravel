@@ -15,6 +15,12 @@ return new class extends Migration
     {
         Schema::create('tagihan_spps', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('id_kelas');
+            $table->string('bulan');
+            $table->string('semester');
+            $table->string('no_tagihan');
+            $table->string('keterangan');
+            $table->foreign('id_kelas')->references('id')->on('kelas')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -15,4 +15,9 @@ class Siswa extends Model
     {
         return $this->hasMany(WaliMurid::class);
     }
+
+    public function detailTagihanSpp()
+    {
+        return $this->hasOne(DetailTagihanSPP::class);
+    }
 }
