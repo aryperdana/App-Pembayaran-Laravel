@@ -21,21 +21,24 @@ class UserData extends Seeder
                 'username' => 'bendahara',
                 'password' => bcrypt('123456'),
                 'level' => 1,
-                'email' => 'bendahara@gmail.com'
+                'email' => 'bendahara@gmail.com',
+                'id_siswa' => 0
             ],
             [
                 'name' => 'wali kelas',
                 'username' => 'wali_kelas',
                 'password' => bcrypt('123456'),
                 'level' => 2,
-                'email' => 'wali_kelas@gmail.com'
+                'email' => 'wali_kelas@gmail.com',
+                'id_siswa' => 0
             ],
             [
                 'name' => 'murid',
                 'username' => 'murid',
                 'password' => bcrypt('123456'),
                 'level' => 3,
-                'email' => 'murid@gmail.com'
+                'email' => 'murid@gmail.com',
+                'id_siswa' => 0
             ]
         ];
 

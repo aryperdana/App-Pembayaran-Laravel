@@ -86,3 +86,15 @@
         </a>
     </li>
 @endif
+
+
+@if ($user->level == 3)
+    <li class="nav-item">
+        <a href="{{ url('wali-murid') }}" class="nav-link">
+            <i class="nav-icon fas fa-file"></i>
+            <p>
+                Pembayaran
+            </p>
+        </a>
+    </li>
+@endif

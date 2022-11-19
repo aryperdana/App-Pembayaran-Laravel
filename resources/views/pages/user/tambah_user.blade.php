@@ -17,6 +17,21 @@
                 <label for="name">Nama User</label>
                 <input type="text" class="form-control" name="name" id="name" placeholder="Masukan Nama User">
             </div>
+            <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="siswaShow">
+                <label class="form-check-label" for="siswaShow">
+                  Sebagai Siswa
+                </label>
+            </div>
+            <div class="form-group" id="siswaInput" style="display: none">
+                <label for="id_siswa">Siswa</label>
+                <select class="form-control" id="siswaInput" name="id_siswa">
+                    <option value="none">Pilih Siswa</option>
+                    @foreach ($data as $item)
+                        <option value="{{ $item->id }}">{{ $item->nama_siswa }}</option>
+                    @endforeach
+                </select>
+            </div>
             <div class="form-group">
                 <label for="username">Username</label>
                 <input type="text" class="form-control" name="username" id="username" placeholder="Masukan Username">
@@ -35,6 +50,7 @@
                     <option value="none">Pilih Role</option>
                     <option value="1">Bendahara</option>
                     <option value="2">Wali Kelas</option>
+                    <option value="3">Murid</option>
                 </select>
             </div>
         </div>
@@ -44,5 +60,19 @@
         </div>
     </form>
 </div>
+
+<script type="text/javascript">
+    $("#siswaShow").click(
+        function (e) {
+            if (document.getElementById("siswaShow").checked) {
+                $("#siswaInput").show();  
+            } else {
+                $("#siswaInput").hide(); 
+            }
+             
+        }
+
+    )
+</script>
 
 @endsection

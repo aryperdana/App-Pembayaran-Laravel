@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Siswa;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,20 +12,23 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
+
         $key = $request->key;
         $user = User::where('name', 'LIKE', '%' . $key . '%')
             ->orWhere('username', 'LIKE', '%' . $key . '%')
             ->orWhere('email', 'LIKE', '%' . $key . '%')->paginate(10);
         return view('pages.user.user')->with([
             'user' => Auth::user(),
-            'data' => $user,
+            'data' => $user
         ]);
     }
 
     public function create()
     {
+        $siswa = Siswa::all();
         return view('pages.user.tambah_user')->with([
             'user' => Auth::user(),
+            'data' => $siswa,
         ]);
     }
 
@@ -36,6 +40,7 @@ class UserController extends Controller
             'username' => 'required',
             'password' => 'required',
             'level' => 'required',
+            'id_siswa' => 'required',
         ]);
 
         $user = new User;
@@ -44,6 +49,7 @@ class UserController extends Controller
         $user->username = $request->username;
         $user->password = Hash::make($request->password);
         $user->level = $request->level;
+        $user->id_siswa = $request->id_siswa;
         $user->save();
 
         return to_route('user.index')->with('success', 'Data Berhasil Di Tambah');
