@@ -15,4 +15,9 @@ class Kelas extends Model
     {
         return $this->hasMany(DetailKelas::class);
     }
+
+    public function tagihanSpp()
+    {
+        return $this->hasOne(TagihanSpp::class);
+    }
 }

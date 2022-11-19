@@ -20,14 +20,11 @@ class TagihanSppController extends Controller
      */
     public function index(Request $request)
     {
-        // $key = $request->key;
-        // $jenis_tagihan = JenisTagihan
-        //     ::where('nama_jenis_tagihan', 'LIKE', '%' . $key . '%')
-        //     ->orWhere('keterangan', 'LIKE', '%' . $key . '%')
-        //     ->paginate(10);
+        $key = $request->key;
+        $tagihan = TagihanSpp::paginate(10);
         return view('pages.tagihan_spp.tagihan_spp')->with([
             'user' => Auth::user(),
-            // 'data' => $jenis_tagihan,
+            'data' => $tagihan,
         ]);
     }
 

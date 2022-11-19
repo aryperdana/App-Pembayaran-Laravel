@@ -23,14 +23,14 @@
                 <tr>
                     <th scope="col" class="text-center" style="width: 30px">No.</th>
                     <th scope="col" class="text-center" style="width: 100px">Aksi</th>
-                    <th scope="col" class="text-center">Siswa</th>
+                    <th scope="col" class="text-center">Kelas</th>
                     <th scope="col" class="text-center">Semester</th>
                     <th scope="col" class="text-center">Bulan</th>
-                    <th scope="col" class="text-center">Total</th>
+                    <th scope="col" class="text-center">Keterangan</th>
                 </tr>
             </thead>
             <tbody>
-                {{-- @foreach ($data as $no => $hasil)
+                @foreach ($data as $no => $hasil)
                 <tr>
                     <td>{{ $no + 1 }}</td>
                     <td class="text-center">
@@ -43,10 +43,12 @@
                               </div>
                         </form>
                     </td>
-                    <td>{{ $hasil->nama_jenis_tagihan }}</td>
+                    <td>{{ $hasil->kelas->kode_kelas  }}</td>
+                    <td>{{ $hasil->semester }}</td>
+                    <td>{{ $hasil->bulan }}</td>
                     <td>{{ $hasil->keterangan }}</td>
                 </tr>
-                @endforeach --}}
+                @endforeach
             </tbody>
         </table>
     </div>  

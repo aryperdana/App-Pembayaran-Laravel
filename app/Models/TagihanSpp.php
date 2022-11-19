@@ -15,4 +15,9 @@ class TagihanSpp extends Model
     {
         return $this->hasMany(DetailTagihanSPP::class);
     }
+
+    public function kelas()
+    {
+        return $this->belongsTo(Kelas::class, 'id_kelas');
+    }
 }
