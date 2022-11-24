@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="{{ asset('/') }}dist/css/adminlte.min.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-UoqXaMSB851Bophw"></script>
 </head>
 
 <body class="hold-transition sidebar-mini">

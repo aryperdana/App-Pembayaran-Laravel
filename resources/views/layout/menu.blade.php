@@ -78,7 +78,7 @@
     </li>
 
     <li class="nav-item">
-        <a href="{{ url('wali-murid') }}" class="nav-link">
+        <a href="{{ url('pembayaran') }}" class="nav-link">
             <i class="nav-icon fas fa-file"></i>
             <p>
                 Pembayaran
@@ -90,7 +90,7 @@
 
 @if ($user->level == 3)
     <li class="nav-item">
-        <a href="{{ url('wali-murid') }}" class="nav-link">
+        <a href="{{ url('pembayaran') }}" class="nav-link">
             <i class="nav-icon fas fa-file"></i>
             <p>
                 Pembayaran

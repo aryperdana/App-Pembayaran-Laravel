@@ -24,6 +24,8 @@
                 <th scope="col" class="text-center" style="width: 30px">No.</th>
                 <th scope="col" class="text-center" style="width: 100px">Aksi</th>
                 <th scope="col" class="text-center">Jenis Tagihan</th>
+                <th scope="col" class="text-center">No. Akun</th>
+                <th scope="col" class="text-center">Nama Akun</th>
                 <th scope="col" class="text-center">Keterangan</th>
                 </tr>
             </thead>
@@ -42,6 +44,8 @@
                         </form>
                     </td>
                     <td>{{ $hasil->nama_jenis_tagihan }}</td>
+                    <td>{{ $hasil->no_akun }}</td>
+                    <td>{{ $hasil->nama_akun }}</td>
                     <td>{{ $hasil->keterangan }}</td>
                 </tr>
                 @endforeach

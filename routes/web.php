@@ -7,6 +7,7 @@ use App\Http\Controllers\KelasController;
 use App\Http\Controllers\KontakGuruController;
 use App\Http\Controllers\LayoutController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\TagihanSppController;
 use App\Http\Controllers\UserController;
@@ -51,6 +52,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::resource('tagihan-spp', TagihanSppController::class);
         Route::get('/tagihan-spp/kelas/{id}', [TagihanSppController::class, 'kelas']);
         Route::resource('kelas', KelasController::class);
+        Route::resource('pembayaran', PembayaranController::class);
     });
     Route::group(['middleware' => ['cekUserLogin:2']], function () {
         // Route::resource('wali-kelas', WaliKelas::class);

@@ -18,6 +18,14 @@
                 <input type="text" class="form-control" name="nama_jenis_tagihan" id="nama_jenis_tagihan" placeholder="Masukan Jenis Tagihan">
             </div>
             <div class="form-group">
+                <label for="no_akun">No. Akun</label>
+                <input type="number" class="form-control" name="no_akun" id="no_akun" placeholder="Masukan No Akun">
+            </div>
+            <div class="form-group">
+                <label for="nama_akun">Nama Akun</label>
+                <input type="text" class="form-control" name="nama_akun" id="nama_akun" placeholder="Masukan Nama Akun">
+            </div>
+            <div class="form-group">
                 <label for="keterangan">Keterangan</label>
                 <input type="text" class="form-control" name="keterangan" id="keterangan" placeholder="Masukan Keterangan">
             </div>
