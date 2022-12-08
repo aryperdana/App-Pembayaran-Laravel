@@ -6,7 +6,6 @@ namespace App\Http\Controllers;
 
 use App\Models\DetailTagihanSPP;
 use App\Models\Pembayaran;
-use App\Models\TagihanSpp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,56 +19,13 @@ class PembayaranController extends Controller
     public function index()
     {
         $id_siswa = Auth::user()->id_siswa;
-        $tagihan = DetailTagihanSPP::where("id_siswa", $id_siswa)->get();
-
-       
-
-
-        // Set your Merchant Server Key
-        \Midtrans\Config::$serverKey = 'SB-Mid-server-FDoT3_mU35adIXfk6GMEh-39';
-        // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
-        \Midtrans\Config::$isProduction = false;
-        // Set sanitization on (default)
-        \Midtrans\Config::$isSanitized = true;
-        // Set 3DS transaction for credit card to true
-        \Midtrans\Config::$is3ds = true;
-
-        $params = array(
-            'transaction_details' => array(
-                'order_id' => rand(),
-                'gross_amount' => 10000,
-            ),
-            'customer_details' => array(
-                'first_name' => 'budi',
-                'last_name' => 'pratama',
-                'email' => 'budi.pra@example.com',
-                'phone' => '08111222333',
-            ),
-            'item_details' => array(
-                [
-                    'id'=> 'a01',
-                    'price'=> 7000,
-                    'quantity'=> 1,
-                    'name'=> 'Apple'
-                ],
-                [
-                    'id'=> 'b02',
-                    'price'=> 3000,
-                    'quantity'=> 2,
-                    'name'=> 'Orange'
-                ] 
-                ),
-        );
-
-        $snapToken = \Midtrans\Snap::getSnapToken($params);
-
+        $tagihan = DetailTagihanSPP::where("id_siswa", $id_siswa)->where('status_pembayaran', 0)->get();
         // return $snapToken;
 
 
         return view('pages.pembayaran.pembayaran')->with([
             'user' => Auth::user(),
             'data' => $tagihan,
-            'snap_token' => $snapToken,
         ]);
     }
 
@@ -81,7 +37,7 @@ class PembayaranController extends Controller
      */
     public function create()
     {
-        //
+       
     }
 
     /**
@@ -92,7 +48,65 @@ class PembayaranController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $iten_details = $request->detail;
+        $item_delete = $request->delete;
+        DetailTagihanSPP::whereIn('id_tagihan_spp', $item_delete)->delete();
+
+         foreach ($iten_details as $key => $value) {
+            $detail_tagihan = array(
+                'id_tagihan_spp'   => $value['id_tagihan_spp'],
+                'id_siswa' => $value['id_siswa'],
+                'id_jenis_tagihan' => $value['id_jenis_tagihan'],
+                'harga' => $value['harga'],
+                'status_pembayaran' => $value['status_pembayaran'],
+            );
+
+            $detail_tagihan = DetailTagihanSPP::create($detail_tagihan);
+        }
+        return to_route('pembayaran.index')->with('success', 'Pembayaran Berhasil');
+
+    }
+
+    public function pay(Request $request)
+    {
+        $iten_details = $request->detail;
+        // Set your Merchant Server Key
+        \Midtrans\Config::$serverKey = 'SB-Mid-server-FDoT3_mU35adIXfk6GMEh-39';
+        // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
+        \Midtrans\Config::$isProduction = false;
+        // Set sanitization on (default)
+        \Midtrans\Config::$isSanitized = true;
+        // Set 3DS transaction for credit card to true
+        \Midtrans\Config::$is3ds = true;
+
+       //  foreach ($request->detail_tagihan as $key => $value) {
+       //     $detail_tagihan = array(
+       //         'id_tagihan_spp'   => $tagihanSpp->id,
+       //         'id_siswa' => $value['id_siswa'],
+       //         'id_jenis_tagihan' => $value['id_jenis_tagihan'],
+       //         'harga' => $value['harga'],
+       //         'status_pembayaran' => $value['status_pembayaran'],
+       //     );
+
+       //     $detail_tagihan = DetailTagihanSPP::create($detail_tagihan);
+       // }
+
+        $params = array(
+            'transaction_details' => array(
+                'order_id' => rand(),
+                'gross_amount' => 10000,
+            ),
+            'customer_details' => array(
+                'first_name' => $request->first_name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+            ),
+            'item_details' => $iten_details
+        );
+
+        $snapToken = \Midtrans\Snap::getSnapToken($params);
+        return response()->json($snapToken, 200);
     }
 
     /**
@@ -114,7 +128,7 @@ class PembayaranController extends Controller
      */
     public function edit(Pembayaran $pembayaran)
     {
-        //
+        
     }
 
     /**
@@ -126,7 +140,21 @@ class PembayaranController extends Controller
      */
     public function update(Request $request, Pembayaran $pembayaran)
     {
-        //
+        
+
+        // DetailTagihanSPP::where('id_tagihan_spp', $id)->delete();
+        
+        // foreach ($request->detail_tagihan as $key => $value) {
+        //     $detail_tagihan = array(
+        //         'id_tagihan_spp'   => $value['id_tagihan_spp'],
+        //         'id_siswa' => $value['id_siswa'],
+        //         'id_jenis_tagihan' => $value['id_jenis_tagihan'],
+        //         'harga' => $value['harga'],
+        //         'status_pembayaran' => $value['status_pembayaran'],
+        //     );
+
+        //     $detail_tagihan = DetailTagihanSPP::create($detail_tagihan);
+        // }
     }
 
     /**

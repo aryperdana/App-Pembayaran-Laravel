@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('nama_siswa');
             $table->string('no_telp');
             $table->string('email');
+            $table->string('nis');
             $table->timestamps();
         });
     }

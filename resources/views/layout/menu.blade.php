@@ -50,14 +50,14 @@
         </a>
     </li>
 
-    <li class="nav-item">
+    {{-- <li class="nav-item">
         <a href="{{ url('jenis-tagihan') }}" class="nav-link">
             <i class="nav-icon fas fa-file"></i>
             <p>
                 Jenis Tagihan
             </p>
         </a>
-    </li>
+    </li> --}}
 
     <li class="nav-item">
         <a href="{{ url('kelas') }}" class="nav-link">
@@ -68,14 +68,38 @@
         </a>
     </li>
 
-    <li class="nav-item">
+    {{-- <li class="nav-item">
         <a href="{{ url('tagihan-spp') }}" class="nav-link">
             <i class="nav-icon fas fa-file"></i>
             <p>
                 Tagihan SPP
             </p>
         </a>
-    </li>
+    </li> --}}
+
+    <li class="nav-item">
+        <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-file"></i>
+          <p>
+            Tagihan
+            <i class="right fas fa-angle-left"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="{{ url('jenis-tagihan') }}" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Jenis Tagihan</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url('tagihan-spp') }}" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Tagihan</p>
+            </a>
+          </li>
+        </ul>
+      </li>
 
     <li class="nav-item">
         <a href="{{ url('pembayaran') }}" class="nav-link">
@@ -89,6 +113,14 @@
 
 
 @if ($user->level == 3)
+    <li class="nav-item">
+        <a href="{{ url('guru') }}" class="nav-link">
+            <i class="nav-icon fas fa-user"></i>
+            <p>
+                Guru
+            </p>
+        </a>
+    </li>
     <li class="nav-item">
         <a href="{{ url('pembayaran') }}" class="nav-link">
             <i class="nav-icon fas fa-file"></i>

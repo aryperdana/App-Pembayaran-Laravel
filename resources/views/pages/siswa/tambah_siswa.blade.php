@@ -18,6 +18,10 @@
                 <input type="text" class="form-control" name="nama_siswa" id="nama_siswa" placeholder="Masukan Nama Siswa">
             </div>
             <div class="form-group">
+                <label for="nis">NIS</label>
+                <input type="text" class="form-control" name="nis" id="nis" placeholder="Masukan NIS">
+            </div>
+            <div class="form-group">
                 <label for="no_telp">No. Telp</label>
                 <input type="text" class="form-control" name="no_telp" id="no_telp" placeholder="Masukan No. Telp">
             </div>

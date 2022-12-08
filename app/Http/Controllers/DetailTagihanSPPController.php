@@ -15,6 +15,11 @@ class DetailTagihanSPPController extends Controller
     public function index()
     {
         //
+        $tagihan_detail = DetailTagihanSPP::get();
+        return response()->json([
+            'message' => 'success',
+            'tagihan' => $tagihan_detail
+        ], 200);
     }
 
     /**

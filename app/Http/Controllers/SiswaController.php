@@ -22,6 +22,16 @@ class SiswaController extends Controller
         ]);
     }
 
+    public function getSiswaAll()
+    {
+        //
+        $siswa = Siswa::get();
+        return response()->json([
+            'message' => 'success',
+            'siswa' => $siswa
+        ], 200);
+    }
+
     public function create()
     {
         return view('pages.siswa.tambah_siswa')->with([
@@ -33,11 +43,13 @@ class SiswaController extends Controller
     {
         $request->validate([
             'no_telp' => 'required',
+            'nis' => 'required',
             'nama_siswa' => 'required|min:3',
             'email' => 'required|min:3',
         ]);
 
         $siswa = new Siswa;
+        $siswa->nis = $request->nis;
         $siswa->no_telp = $request->no_telp;
         $siswa->nama_siswa = $request->nama_siswa;
         $siswa->email = $request->email;

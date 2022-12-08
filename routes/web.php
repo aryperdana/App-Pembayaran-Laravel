@@ -12,6 +12,7 @@ use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\TagihanSppController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WaliMuridController;
+use App\Http\Controllers\DetailTagihanSPPController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -50,9 +51,12 @@ Route::group(['middleware' => ['auth']], function () {
         Route::resource('wali-murid', WaliMuridController::class);
         Route::resource('jenis-tagihan', JenisTagihanController::class);
         Route::resource('tagihan-spp', TagihanSppController::class);
+        Route::resource('detail-tagihan-spp', DetailTagihanSPPController::class);
         Route::get('/tagihan-spp/kelas/{id}', [TagihanSppController::class, 'kelas']);
         Route::resource('kelas', KelasController::class);
         Route::resource('pembayaran', PembayaranController::class);
+        Route::post('/pembayaran/pay', [PembayaranController::class, 'pay']);
+        Route::get('/pembayaran/get-tagihan/', [PembayaranController::class, 'tagihan']);
     });
     Route::group(['middleware' => ['cekUserLogin:2']], function () {
         // Route::resource('wali-kelas', WaliKelas::class);

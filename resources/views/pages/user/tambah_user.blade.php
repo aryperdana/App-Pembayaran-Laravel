@@ -25,10 +25,10 @@
             </div>
             <div class="form-group" id="siswaInput" style="display: none">
                 <label for="id_siswa">Siswa</label>
-                <select class="form-control" id="siswaInput" name="id_siswa">
+                <select class="form-control" id="id_siswa" name="id_siswa">
                     <option value="none">Pilih Siswa</option>
                     @foreach ($data as $item)
-                        <option value="{{ $item->id }}">{{ $item->nama_siswa }}</option>
+                        <option value="{{ $item->id }}" usernameAttr="{{ $item->nis }}">{{ $item->nama_siswa }}</option>
                     @endforeach
                 </select>
             </div>
@@ -62,17 +62,31 @@
 </div>
 
 <script type="text/javascript">
-    $("#siswaShow").click(
-        function (e) {
-            if (document.getElementById("siswaShow").checked) {
-                $("#siswaInput").show();  
-            } else {
-                $("#siswaInput").hide(); 
-            }
-             
+ $(document).ready(()=>
+ {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
         }
+    });
 
+     $("#siswaShow").click(
+         function (e) {
+            if (document.getElementById("siswaShow").checked) {
+                $("#siswaInput").show();
+                $('#username').attr('readonly', true);
+
+                $("#id_siswa").change(function () { 
+                    $("#username").val($(this).find('option:selected').attr("usernameAttr"));
+                }).change();
+
+            } else {
+                $("#siswaInput").hide();
+                $('#username').attr('readonly', false); 
+            }   
+        }
     )
+})
 </script>
 
 @endsection
