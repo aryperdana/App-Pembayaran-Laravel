@@ -32,11 +32,13 @@ class TagihanSppController extends Controller
     public function kelas($id)
     {
         $detail_kelas = DetailKelas::where('id_kelas', $id)->get();
-
-        foreach ($detail_kelas as $key => $value) {
-            $getSiswa = Siswa::where('id', $value->id_siswa)->get();
+        $id_siswa_arr = array();
+        foreach ($detail_kelas as $value) {
+            $id_siswa_arr[] = $value['id_siswa'];  
         }
 
+        $getSiswa = Siswa::query()->find($id_siswa_arr);
+        
         return response([
             'message' => 'success',
             'data' => $detail_kelas,
@@ -106,10 +108,11 @@ class TagihanSppController extends Controller
             }
 
             $sid    = "ACd529b8c3afd7bec46cb62c981a991fd0"; 
-            $token  = "42e5c3fc17b7d48e17b4d32227fe786f"; 
+            $token  = "170b8354310793e51cbb7c94237d95b5"; 
             $twilio = new Client($sid, $token); 
 
 
+           
             foreach ($request->data_siswa as $key => $value) {
                     $message = $twilio->messages 
                             ->create("whatsapp:{$value['no_telp']}", // to 

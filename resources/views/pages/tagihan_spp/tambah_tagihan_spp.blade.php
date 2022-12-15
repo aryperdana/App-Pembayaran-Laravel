@@ -108,9 +108,9 @@
             }
         });
 
-        $('#listSiswa').append("<tr>\
-                <td colSpan='2' class='text-center align-middle' height='100'><b>Pilih Kelas</b></td>\
-                </tr>");
+        // $('#listSiswa').append("<tr>\
+        //         <td colSpan='2' class='text-center align-middle' height='100'><b>Pilih Kelas</b></td>\
+        //         </tr>");
 
         
         $(document).on('change', ".getKelas", function () {
@@ -136,9 +136,11 @@
                         dataListGlobal.push(...dataList)
                         dataSiswa.push(...response.siswa)
 
+                        console.log(dataList);
+
                         $.each(dataList, function (key, value) {
                      
-							$('#listSiswa').replaceWith("<tr>\
+							$('#listSiswa').append("<tr>\
                                         <td>"+parseInt(key + 1)+"</td>\
 										<td>"+value.nama_siswa+"</td>\
 										</tr>");
