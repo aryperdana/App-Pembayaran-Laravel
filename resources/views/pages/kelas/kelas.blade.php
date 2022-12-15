@@ -44,7 +44,7 @@
                         </form>
                     </td>
                     <td>{{ $hasil->kode_kelas }}</td>
-                    <td>{{ $hasil->id_guru }}</td>
+                    <td>{{ $hasil->guru->nama_guru }}</td>
                     <td>{{ $hasil->tahun_ajaran }}</td>
                     <td>{{ $hasil->semester }}</td>
                 </tr>

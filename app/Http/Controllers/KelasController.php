@@ -24,6 +24,7 @@ class KelasController extends Controller
             ->orWhere('tahun_ajaran', 'LIKE', '%' . $key . '%')
             ->orWhere('semester', 'LIKE', '%' . $key . '%')
             ->paginate(10);
+
         return view('pages.kelas.kelas')->with([
             'user' => Auth::user(),
             'data' => $kelas,

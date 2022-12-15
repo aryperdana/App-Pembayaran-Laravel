@@ -20,4 +20,9 @@ class Kelas extends Model
     {
         return $this->hasOne(TagihanSpp::class);
     }
+
+    public function guru()
+    {
+        return $this->belongsTo(Guru::class, 'id_guru');
+    }
 }
