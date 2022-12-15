@@ -19,7 +19,13 @@ class PembayaranController extends Controller
     public function index()
     {
         $id_siswa = Auth::user()->id_siswa;
-        $tagihan = DetailTagihanSPP::where("id_siswa", $id_siswa)->where('status_pembayaran', 0)->get();
+        $tagihan = array();
+        if ($id_siswa != "0") {
+            $tagihan = DetailTagihanSPP::where("id_siswa", $id_siswa)->where('status_pembayaran', 0)->get();
+        } else {
+            $tagihan = DetailTagihanSPP::where('status_pembayaran', 0)->get();
+        }
+        
         // return $snapToken;
 
 

@@ -13,7 +13,7 @@
             <thead>
                 <tr>
                 <th scope="col" class="text-center" style="width: 30px">No.</th>
-                <th scope="col" class="text-center">No. Tagihan</th>
+                {{-- <th scope="col" class="text-center">No. Tagihan</th> --}}
                 <th scope="col" class="text-center">Kode Kelas</th>
                 <th scope="col" class="text-center">Tahun Ajaran</th>
                 <th scope="col" class="text-center">Bulan</th>
@@ -28,10 +28,47 @@
                 @foreach ($data as $no => $hasil)
                 <tr>
                     <td>{{ $no + 1 }}</td>
-                    <td>{{ $hasil->tagihanSpp->no_tagihan }}</td>
+                    {{-- <td>{{ $hasil->tagihanSpp->no_tagihan }}</td> --}}
                     <td>{{ $hasil->tagihanSpp->kelas->kode_kelas }}</td>
                     <td>{{ $hasil->tagihanSpp->kelas->tahun_ajaran }}</td>
-                    <td>{{ $hasil->tagihanSpp->bulan }}</td>
+                    <td>
+                        @if ($hasil->tagihanSpp->bulan == "1")
+                            Januari
+                        @endif
+                        @if ($hasil->tagihanSpp->bulan == "2")
+                            Februari
+                        @endif
+                        @if ($hasil->tagihanSpp->bulan == "3")
+                            Maret
+                        @endif
+                        @if ($hasil->tagihanSpp->bulan == "4")
+                            April
+                        @endif
+                        @if ($hasil->tagihanSpp->bulan == "5")
+                            Mei
+                        @endif
+                        @if ($hasil->tagihanSpp->bulan == "6")
+                            Juni
+                        @endif
+                        @if ($hasil->tagihanSpp->bulan == "7")
+                            Juli
+                        @endif
+                        @if ($hasil->tagihanSpp->bulan == "8")
+                            Agustus
+                        @endif  
+                        @if ($hasil->tagihanSpp->bulan == "9")
+                            September
+                        @endif
+                        @if ($hasil->tagihanSpp->bulan == "10")
+                            Oktober
+                        @endif
+                        @if ($hasil->tagihanSpp->bulan == "11")
+                            November
+                        @endif
+                        @if ($hasil->tagihanSpp->bulan == "12")
+                            Desember
+                        @endif
+                    </td>
                     <td>{{ $hasil->tagihanSpp->semester }}</td>
                     <td>{{ $hasil->siswa->nama_siswa }}</td>
                     <td>{{ $hasil->jenisTagihan->nama_jenis_tagihan }}</td>
