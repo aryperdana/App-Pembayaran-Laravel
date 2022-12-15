@@ -1,7 +1,7 @@
 @extends('layout.main')
 
 @section('judul')
-    Kelas
+    Pembayaran
 @endsection
 
 @section('isi')
