@@ -10,6 +10,7 @@ use App\Models\Siswa;
 use App\Models\TagihanSpp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Twilio\Rest\Client; 
 
 class TagihanSppController extends Controller
 {
@@ -75,6 +76,7 @@ class TagihanSppController extends Controller
     public function store(Request $request)
     {
         if ($request->ajax()) {
+ 
             $request->validate([
                 'id_kelas' => 'required',
                 'bulan' => 'required',
@@ -102,6 +104,23 @@ class TagihanSppController extends Controller
 
                 $detail_tagihan = DetailTagihanSPP::create($detail_tagihan);
             }
+
+            $sid    = "ACd529b8c3afd7bec46cb62c981a991fd0"; 
+            $token  = "42e5c3fc17b7d48e17b4d32227fe786f"; 
+            $twilio = new Client($sid, $token); 
+
+
+            foreach ($request->data_siswa as $key => $value) {
+                    $message = $twilio->messages 
+                            ->create("whatsapp:{$value['no_telp']}", // to 
+                                    array( 
+                                        "from" => "whatsapp:+14155238886",       
+                                        "body" => "Hallo, kami dari pihak sekolah menyampaikan bahwa tagihan untuk siswa/siswi dengan nama {$value['nama_siswa']} sudah bisa dibayar, Terima Kasih" 
+                                    ) 
+                            ); 
+            }
+            
+            
         }
 
         return 'Data Berhasil Di Tambah';

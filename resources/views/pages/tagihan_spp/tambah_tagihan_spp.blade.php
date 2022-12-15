@@ -100,6 +100,7 @@
 <script>
     $(document).ready(function () {
         let dataListGlobal = []
+        const dataSiswa = []
 
         $.ajaxSetup({
             headers: {
@@ -133,6 +134,7 @@
                         })
 
                         dataListGlobal.push(...dataList)
+                        dataSiswa.push(...response.siswa)
 
                         $.each(dataList, function (key, value) {
                      
@@ -145,6 +147,8 @@
                 }) 
             }  
         });
+
+        
 
 
         $(document).on('click', "#simpan", function () {
@@ -166,16 +170,13 @@
                 }
             });
 
-            console.log({
-                    id_kelas : id_kelas,
-                    bulan : bulan,
-                    semester : semester,
-                    harga : harga,
-                    no_tagihan : no_tagihan,
-                    keterangan : keterangan,
-                    detail_tagihan : dataDetail,
-                });
-
+            let dataSiswaMaping = dataSiswa.map((val) => {
+                const no_telp_edit = val?.no_telp?.split('').map((res, ind) => ind === 0 ? "+62" : res).join('')
+                return {
+                    ...val,
+                    no_telp: no_telp_edit,
+                }
+            })
 
             $.ajax({
                 type: "post",
@@ -188,6 +189,7 @@
                     no_tagihan : no_tagihan,
                     keterangan : keterangan,
                     detail_tagihan : dataDetail,
+                    data_siswa : dataSiswaMaping,
                     "_token" : "{{ csrf_token() }}"
                 },
                 success: function (res) {
