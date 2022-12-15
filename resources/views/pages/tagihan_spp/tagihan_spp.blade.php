@@ -26,7 +26,7 @@
                     <th scope="col" class="text-center">Kelas</th>
                     <th scope="col" class="text-center">Semester</th>
                     <th scope="col" class="text-center">Bulan</th>
-                    <th scope="col" class="text-center">Keterangan</th>
+                    {{-- <th scope="col" class="text-center">Keterangan</th> --}}
                 </tr>
             </thead>
             <tbody>
@@ -45,8 +45,45 @@
                     </td>
                     <td>{{ $hasil->kelas->kode_kelas  }}</td>
                     <td>{{ $hasil->semester }}</td>
-                    <td>{{ $hasil->bulan }}</td>
-                    <td>{{ $hasil->keterangan }}</td>
+                    <td> 
+                        @if ($hasil->bulan == "1")
+                            Januari
+                        @endif
+                        @if ($hasil->bulan == "2")
+                            Februari
+                        @endif
+                        @if ($hasil->bulan == "3")
+                            Maret
+                        @endif
+                        @if ($hasil->bulan == "4")
+                            April
+                        @endif
+                        @if ($hasil->bulan == "5")
+                            Mei
+                        @endif
+                        @if ($hasil->bulan == "6")
+                            Juni
+                        @endif
+                        @if ($hasil->bulan == "7")
+                            Juli
+                        @endif
+                        @if ($hasil->bulan == "8")
+                            Agustus
+                        @endif
+                        @if ($hasil->bulan == "9")
+                            September
+                        @endif
+                        @if ($hasil->bulan == "10")
+                            Oktober
+                        @endif
+                        @if ($hasil->bulan == "11")
+                            November
+                        @endif
+                        @if ($hasil->bulan == "12")
+                            Desember
+                        @endif
+                    </td>
+                    {{-- <td>{{ $hasil->keterangan }}</td> --}}
                 </tr>
                 @endforeach
             </tbody>

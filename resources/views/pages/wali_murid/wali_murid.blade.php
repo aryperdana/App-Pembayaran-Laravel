@@ -1,7 +1,7 @@
 @extends('layout.main')
 
 @section('judul')
-    Siswa
+    Wali Murid
 @endsection
 
 @section('isi')

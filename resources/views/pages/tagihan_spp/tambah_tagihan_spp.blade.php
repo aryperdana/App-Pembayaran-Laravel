@@ -37,7 +37,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="bulan">Semester</label>
+                        <label for="bulan">Bulan</label>
                         <select class="form-control" id="bulan" name="bulan">
                             <option value="none">Pilih Bulan</option>
                             <option value="1">Januari</option>
