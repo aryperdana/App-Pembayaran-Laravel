@@ -69,7 +69,7 @@
                         @endif
                         @if ($hasil->bulan == "8")
                             Agustus
-                        @endif
+                        @endif  
                         @if ($hasil->bulan == "9")
                             September
                         @endif

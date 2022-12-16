@@ -102,6 +102,7 @@ class TagihanSppController extends Controller
                     'id_jenis_tagihan' => $value['id_jenis_tagihan'],
                     'harga' => $value['harga'],
                     'status_pembayaran' => $value['status_pembayaran'],
+                    'tunai' => $value['tunai'],
                 );
 
                 $detail_tagihan = DetailTagihanSPP::create($detail_tagihan);
@@ -146,9 +147,17 @@ class TagihanSppController extends Controller
      * @param  \App\Models\TagihanSpp  $tagihanSpp
      * @return \Illuminate\Http\Response
      */
-    public function edit(TagihanSpp $tagihanSpp)
+    public function edit($id)
     {
-        //
+        $jenis_tagihan = JenisTagihan::all();
+        $kelas = Kelas::all();
+        return view('pages.tagihan_spp.ubah_tagihan_spp')->with([
+            'user' => Auth::user(),
+            'siswa' => Siswa::all(),
+            'data' => TagihanSpp::find($id),
+            'jenis_tagihan' => $jenis_tagihan,
+            'kelas' => $kelas,
+        ]);
     }
 
     /**
@@ -158,9 +167,43 @@ class TagihanSppController extends Controller
      * @param  \App\Models\TagihanSpp  $tagihanSpp
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, TagihanSpp $tagihanSpp)
+    public function update(Request $request, $tagihanSpp)
     {
-        //
+        if ($request->ajax()) {
+ 
+            $request->validate([
+                'id_kelas' => 'required',
+                'bulan' => 'required',
+                'semester' => 'required',
+                'no_tagihan' => 'required',
+            ]);
+
+            $tagihanSpp = TagihanSpp::find($tagihanSpp);
+            $tagihanSpp->id_kelas = $request->id_kelas;
+            $tagihanSpp->bulan = $request->bulan;
+            $tagihanSpp->semester = $request->semester;
+            $tagihanSpp->no_tagihan = $request->no_tagihan;
+            $tagihanSpp->keterangan = $request->keterangan;
+            $tagihanSpp->save();
+
+            DetailTagihanSPP::whereIn('id_tagihan_spp', $tagihanSpp)->delete();
+
+            foreach ($request->detail_tagihan as $key => $value) {
+                $detail_tagihan = array(
+                    'id_tagihan_spp'   => $tagihanSpp->id,
+                    'id_siswa' => $value['id_siswa'],
+                    'id_jenis_tagihan' => $value['id_jenis_tagihan'],
+                    'harga' => $value['harga'],
+                    'status_pembayaran' => $value['status_pembayaran'],
+                    'tunai' => $value['tunai'],
+                );
+
+                $detail_tagihan = DetailTagihanSPP::create($detail_tagihan);
+            }
+            
+        }
+
+        return 'Data Berhasil Di Tambah';
     }
 
     /**
@@ -169,8 +212,12 @@ class TagihanSppController extends Controller
      * @param  \App\Models\TagihanSpp  $tagihanSpp
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TagihanSpp $tagihanSpp)
+    public function destroy($tagihanSpp)
     {
-        //
+        $tagihanSpp = TagihanSpp::find($tagihanSpp);
+        $tagihanSpp->delete();
+        DetailTagihanSPP::whereIn('id_tagihan_spp', $tagihanSpp)->delete();
+        
+        return back()->with('success', 'Data Berhasil Di Hapus');
     }
 }

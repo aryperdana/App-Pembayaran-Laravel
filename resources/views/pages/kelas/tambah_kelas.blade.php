@@ -7,7 +7,7 @@
 @section('isi')
 <div class="d-flex justify-content-between mb-2">
     <b>Tambah Kelas</b>
-    <a href="{{ route('siswa.index')}}" class="btn btn-sm btn-outline-secondary"><i class="fas fa-arrow-left mr-2"></i>Kembali</a>
+    <a href="{{ route('kelas.index')}}" class="btn btn-sm btn-outline-secondary"><i class="fas fa-arrow-left mr-2"></i>Kembali</a>
 </div>
 <div class="card">
     <div class="card-body">

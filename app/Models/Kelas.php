@@ -13,7 +13,7 @@ class Kelas extends Model
 
     public function detail_kelas()
     {
-        return $this->hasMany(DetailKelas::class);
+        return $this->hasMany(DetailKelas::class, 'id');
     }
 
     public function tagihanSpp()

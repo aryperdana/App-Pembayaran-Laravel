@@ -110,9 +110,18 @@ class KelasController extends Controller
      * @param  \App\Models\Kelas  $kelas
      * @return \Illuminate\Http\Response
      */
-    public function edit(Kelas $kelas)
+    public function edit($id)
     {
-        //
+        // dd($id);
+        $data = Kelas::find($id);
+        $detail_kelas = DetailKelas::where("id_kelas", $id)->get();
+        return view('pages.kelas.ubah_kelas')->with([
+            'user' => Auth::user(),
+            'guru' => Guru::all(),
+            'siswa' => Siswa::all(),
+            'data' => Kelas::find($id),
+            'detail_kelas' => $detail_kelas,
+        ]);
     }
 
     /**
@@ -122,9 +131,37 @@ class KelasController extends Controller
      * @param  \App\Models\Kelas  $kelas
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Kelas $kelas)
+    public function update(Request $request, $kelas)
     {
-        //
+        // dd($request);
+        if ($request->ajax()) {
+            $request->validate([
+                'kode_kelas' => 'required',
+                'id_guru' => 'required',
+                'tahun_ajaran' => 'required',
+                'semester' => 'required',
+            ]);
+
+            $kelas = Kelas::find($kelas);
+            $kelas->kode_kelas = $request->kode_kelas;
+            $kelas->id_guru = $request->id_guru;
+            $kelas->tahun_ajaran = $request->tahun_ajaran;
+            $kelas->semester = $request->semester;
+            $kelas->save();
+
+            DetailKelas::whereIn('id_kelas', $kelas)->delete();
+
+            foreach ($request->detail_kelas as $key => $value) {
+                $detail_kelas = array(
+                    'id_kelas'   => $kelas->id,
+                    'id_siswa' => $value,
+                );
+
+                $detail_kelas = DetailKelas::create($detail_kelas);
+            }
+        }
+
+        return 'Data Berhasil Di Tambah';
     }
 
     /**
@@ -133,8 +170,12 @@ class KelasController extends Controller
      * @param  \App\Models\Kelas  $kelas
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Kelas $kelas)
+    public function destroy($kelas)
     {
-        //
+        $kelas = Kelas::find($kelas);
+        $kelas->delete();
+        DetailKelas::whereIn('id_kelas', $kelas)->delete();
+        
+        return back()->with('success', 'Data Berhasil Di Hapus');
     }
 }

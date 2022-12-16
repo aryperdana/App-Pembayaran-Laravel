@@ -169,6 +169,7 @@
                     id_jenis_tagihan: id_jenis_tagihan,
                     harga: harga,
                     status_pembayaran: 0,
+                    tunai: 0,
                 }
             });
 
