@@ -38,9 +38,10 @@
                             @csrf
                             @method('delete')
                             <div class="btn-group" role="group" aria-label="Basic example">
+                                <a href="{{ route('tagihan-spp.show', $hasil->id) }}" class="btn btn-outline-info"><i class="fas fa-file"></i></a>
                                 <a href="{{ route('tagihan-spp.edit', $hasil->id) }}" class="btn btn-outline-success"><i class="fas fa-pen"></i></a>
                                 <button class="btn btn-outline-danger"><i class="fas fa-trash"></i></button>
-                              </div>
+                            </div>
                         </form>
                     </td>
                     <td>{{ $hasil->kelas->kode_kelas  }}</td>

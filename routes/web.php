@@ -53,6 +53,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::resource('tagihan-spp', TagihanSppController::class);
         Route::resource('detail-tagihan-spp', DetailTagihanSPPController::class);
         Route::get('/tagihan-spp/kelas/{id}', [TagihanSppController::class, 'kelas']);
+        Route::post('/tagihan-spp/send-notif', [TagihanSppController::class, 'sendNotif']);
         Route::resource('kelas', KelasController::class);
         Route::resource('pembayaran', PembayaranController::class);
         Route::post('/pembayaran/pay', [PembayaranController::class, 'pay']);

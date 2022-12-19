@@ -106,24 +106,7 @@ class TagihanSppController extends Controller
                 );
 
                 $detail_tagihan = DetailTagihanSPP::create($detail_tagihan);
-            }
-
-            $sid    = "ACd529b8c3afd7bec46cb62c981a991fd0"; 
-            $token  = "170b8354310793e51cbb7c94237d95b5"; 
-            $twilio = new Client($sid, $token); 
-
-
-           
-            foreach ($request->data_siswa as $key => $value) {
-                    $message = $twilio->messages 
-                            ->create("whatsapp:{$value['no_telp']}", // to 
-                                    array( 
-                                        "from" => "whatsapp:+14155238886",       
-                                        "body" => "Hallo, kami dari pihak sekolah menyampaikan bahwa tagihan untuk siswa/siswi dengan nama {$value['nama_siswa']} sudah bisa dibayar, Terima Kasih" 
-                                    ) 
-                            ); 
-            }
-            
+            }            
             
         }
 
@@ -136,10 +119,54 @@ class TagihanSppController extends Controller
      * @param  \App\Models\TagihanSpp  $tagihanSpp
      * @return \Illuminate\Http\Response
      */
-    public function show(TagihanSpp $tagihanSpp)
+    public function show($id)
     {
-        //
+        $jenis_tagihan = JenisTagihan::all();
+        $kelas = Kelas::all();
+        $tagihanSpp = TagihanSpp::find($id);
+        $detail_kelas = DetailKelas::where('id_kelas', $tagihanSpp->id_kelas)->get();
+        $id_siswa_arr = array();
+        foreach ($detail_kelas as $value) {
+            $id_siswa_arr[] = $value['id_siswa'];  
+        }
+
+        $getSiswa = Siswa::query()->find($id_siswa_arr);
+        return view('pages.tagihan_spp.detail_tagihan_spp')->with([
+            'user' => Auth::user(),
+            'siswa' => Siswa::all(),
+            'data' => $tagihanSpp,
+            'jenis_tagihan' => $jenis_tagihan,
+            'kelas' => $kelas,
+            'data_siswa' => $getSiswa,
+        ]);
     }
+
+    public function sendNotif(Request $request)
+    {
+
+        if ($request->ajax()) {
+            $sid    = "ACd529b8c3afd7bec46cb62c981a991fd0"; 
+            $token  = "9966ce065fa2e4c96315b6bf27f71a86"; 
+            $twilio = new Client($sid, $token); 
+
+
+           
+            foreach ($request->data_siswa as $key => $value) {
+                $message = $twilio->messages 
+                    ->create("whatsapp:{$value['no_telp']}", // to 
+                            array( 
+                                "from" => "whatsapp:+14155238886",       
+                                "body" => "Hallo {$value['nama_siswa']}, {$request['message']}" 
+                            ) 
+                    ); 
+            }
+            
+            
+        }
+
+        return 'Data Berhasil Di Tambah';
+    }
+
 
     /**
      * Show the form for editing the specified resource.
