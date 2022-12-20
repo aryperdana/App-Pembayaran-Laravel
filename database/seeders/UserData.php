@@ -22,7 +22,8 @@ class UserData extends Seeder
                 'password' => bcrypt('123456'),
                 'level' => 1,
                 'email' => 'bendahara@gmail.com',
-                'id_siswa' => 0
+                'id_siswa' => 0,
+                'id_guru' => 0
             ],
             [
                 'name' => 'wali kelas',
@@ -30,7 +31,8 @@ class UserData extends Seeder
                 'password' => bcrypt('123456'),
                 'level' => 2,
                 'email' => 'wali_kelas@gmail.com',
-                'id_siswa' => 0
+                'id_siswa' => 0,
+                'id_guru' => 0
             ],
             [
                 'name' => 'murid',
@@ -38,7 +40,8 @@ class UserData extends Seeder
                 'password' => bcrypt('123456'),
                 'level' => 3,
                 'email' => 'murid@gmail.com',
-                'id_siswa' => 0
+                'id_siswa' => 0,
+                'id_guru' => 0
             ]
         ];
 

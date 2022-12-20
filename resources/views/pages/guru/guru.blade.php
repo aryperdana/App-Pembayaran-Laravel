@@ -30,6 +30,7 @@
                 <th scope="col" class="text-center" style="width: 100px">Aksi</th>
                 @endif
                 <th scope="col" class="text-center">Nama</th>
+                <th scope="col" class="text-center">NIP</th>
                 <th scope="col" class="text-center">No. Telp</th>
                 <th scope="col" class="text-center">Jabatan</th>
                 <th scope="col" class="text-center">Foto Guru</th>
@@ -52,6 +53,7 @@
                     </td>
                     @endif
                     <td>{{ $hasil->nama_guru }}</td>
+                    <td>{{ $hasil->nip }}</td>
                     <td>{{ $hasil->no_telp }}</td>
                     <td>{{ $hasil->jabatan }}</td>
                     <td class="text-center px-0" style="width: 300px">

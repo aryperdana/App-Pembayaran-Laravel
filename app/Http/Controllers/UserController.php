@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Siswa;
+use App\Models\Guru;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,9 +27,11 @@ class UserController extends Controller
     public function create()
     {
         $siswa = Siswa::all();
+        $guru = Guru::all();
         return view('pages.user.tambah_user')->with([
             'user' => Auth::user(),
             'data' => $siswa,
+            'data_guru' => $guru,
         ]);
     }
 
@@ -41,8 +44,23 @@ class UserController extends Controller
             'username' => 'required',
             'password' => 'required',
             'level' => 'required',
-            'id_siswa' => 'required',
         ]);
+
+        
+        if ($request->id_guru != "none") {
+            $saving_guru = $request->id_guru;
+        } else {
+            $saving_guru = 0;
+        }
+
+        if ($request->id_siswa != "none") {
+            $saving_murid = $request->id_siswa;
+        } else {
+            $saving_murid = 0;
+        }
+
+        
+        
 
         $user = new User;
         $user->name = $request->name;
@@ -50,7 +68,8 @@ class UserController extends Controller
         $user->username = $request->username;
         $user->password = Hash::make($request->password);
         $user->level = $request->level;
-        $user->id_siswa = $request->id_siswa;
+        $user->id_siswa = $saving_murid;
+        $user->id_guru = $saving_guru;
         $user->save();
 
         return to_route('user.index')->with('success', 'Data Berhasil Di Tambah');

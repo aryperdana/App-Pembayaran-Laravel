@@ -38,6 +38,7 @@ class GuruController extends Controller
             'no_telp' => 'required',
             'jabatan' => 'required',
             'path_foto' => 'mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'nip' => 'required',
         ]);
 
         if ($request->hasFile('path_foto')) {
@@ -50,6 +51,7 @@ class GuruController extends Controller
         $guru->no_telp = $request->no_telp;
         $guru->nama_guru = $request->nama_guru;
         $guru->jabatan = $request->jabatan;
+        $guru->nip = $request->nip;
         $guru->path_foto = $image;
         $guru->save();
 

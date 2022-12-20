@@ -25,6 +25,10 @@
                 <label for="jabatan">Jabatan</label>
                 <input type="text" class="form-control" name="jabatan" id="jabatan" placeholder="Masukan Jabatan">
             </div>
+            <div class="form-group">
+                <label for="nip">NIP</label>
+                <input type="number" class="form-control" name="nip" id="nip" placeholder="Masukan NIP">
+            </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                     <label for="path_foto">Foto Guru</label>

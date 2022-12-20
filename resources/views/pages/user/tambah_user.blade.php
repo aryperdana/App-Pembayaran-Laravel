@@ -17,11 +17,19 @@
                 <label for="name">Nama User</label>
                 <input type="text" class="form-control" name="name" id="name" placeholder="Masukan Nama User">
             </div>
-            <div class="form-check mb-2">
-                <input class="form-check-input" type="checkbox" id="siswaShow">
-                <label class="form-check-label" for="siswaShow">
-                  Sebagai Siswa
-                </label>
+            <div class="d-flex">
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="siswaShow">
+                    <label class="form-check-label" for="siswaShow">
+                    Sebagai Siswa
+                    </label>
+                </div>
+                <div class="form-check mb-2 ml-3">
+                    <input class="form-check-input" type="checkbox" id="guruShow">
+                    <label class="form-check-label" for="guruShow">
+                    Sebagai Guru
+                    </label>
+                </div>
             </div>
             <div class="form-group" id="siswaInput" style="display: none">
                 <label for="id_siswa">Siswa</label>
@@ -32,6 +40,18 @@
                     @endforeach
                 </select>
             </div>
+
+            <div class="form-group" id="guruInput" style="display: none">
+                <label for="id_guru">Guru</label>
+                <select class="form-control" id="id_guru" name="id_guru">
+                    <option value="none">Pilih Guru</option>
+                    @foreach ($data_guru as $item)
+                        <option value="{{ $item->id }}" usernameAttr="{{ $item->nip }}">{{ $item->nama_guru }}</option>
+                    @endforeach
+                </select>
+            </div>
+            
+            
             <div class="form-group">
                 <label for="username">Username</label>
                 <input type="text" class="form-control" name="username" id="username" placeholder="Masukan Username">
@@ -82,6 +102,23 @@
 
             } else {
                 $("#siswaInput").hide();
+                $('#username').attr('readonly', false); 
+            }   
+        }
+    )
+
+    $("#guruShow").click(
+         function (e) {
+            if (document.getElementById("guruShow").checked) {
+                $("#guruInput").show();
+                $('#username').attr('readonly', true);
+
+                $("#id_guru").change(function () { 
+                    $("#username").val($(this).find('option:selected').attr("usernameAttr"));
+                }).change();
+
+            } else {
+                $("#guruInput").hide();
                 $('#username').attr('readonly', false); 
             }   
         }

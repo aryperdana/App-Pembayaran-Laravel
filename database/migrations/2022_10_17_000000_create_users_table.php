@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('level', 5);
             $table->bigInteger('id_siswa');
+            $table->bigInteger('id_guru');
             $table->rememberToken();
             $table->timestamps();
         });

@@ -146,7 +146,7 @@ class TagihanSppController extends Controller
 
         if ($request->ajax()) {
             $sid    = "ACd529b8c3afd7bec46cb62c981a991fd0"; 
-            $token  = "9966ce065fa2e4c96315b6bf27f71a86"; 
+            $token  = "1K4BWwQHdHaw1rCwU3fJME4wWKTVFvd13M"; 
             $twilio = new Client($sid, $token); 
 
 

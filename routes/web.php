@@ -13,6 +13,7 @@ use App\Http\Controllers\TagihanSppController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WaliMuridController;
 use App\Http\Controllers\DetailTagihanSPPController;
+use App\Http\Controllers\LaporanTunggakanController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -58,6 +59,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::resource('pembayaran', PembayaranController::class);
         Route::post('/pembayaran/pay', [PembayaranController::class, 'pay']);
         Route::get('/pembayaran/get-tagihan/', [PembayaranController::class, 'tagihan']);
+        Route::resource('laporan-tunggakan', LaporanTunggakanController::class);
     });
     Route::group(['middleware' => ['cekUserLogin:2']], function () {
         // Route::resource('wali-kelas', WaliKelas::class);
