@@ -6,7 +6,6 @@
 
 @section('isi')
 <form action="" method="GET">
-    
     <div class="d-flex justify-content-between"> 
         <div class="form-group col-4">
             <label for="">Tanggal Awal</label>
@@ -26,11 +25,13 @@
                 <button class="btn btn-primary ml-3">Cari</button>
             </div>
         </div>
+    </form>
+    {{-- <form action="{{ url('laporan-tunggakan/export/') }}" method="GET"> --}}
         <div>
-            <div class="btn btn-success">Export Excel</div>
+            <a href="{{ url('laporan-tunggakan/export/') }}" class="btn btn-success">Export Excel</a>
         </div>
+    {{-- </form> --}}
     </div>
-</form>
 <div class="card">
     <div class="card-body table-responsive">
         <table class="table table-bordered table-hover text-nowrap">

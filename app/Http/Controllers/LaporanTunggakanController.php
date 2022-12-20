@@ -7,6 +7,8 @@ use App\Models\DetailTagihanSPP;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\TunggakanExport;
 
 class LaporanTunggakanController extends Controller
 {
@@ -38,6 +40,11 @@ class LaporanTunggakanController extends Controller
             'end_date' => Carbon::parse($end_date)->format('Y-m-d'),
             'key' => $key,
         ]);
+    }
+
+    public function exportTunggakan()
+    {
+        return Excel::download(new TunggakanExport, 'users.xlsx');
     }
 
     /**

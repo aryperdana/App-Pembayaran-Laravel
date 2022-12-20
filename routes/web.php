@@ -10,6 +10,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\TagihanSppController;
+use App\Http\Controllers\TagihanLainnyaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WaliMuridController;
 use App\Http\Controllers\DetailTagihanSPPController;
@@ -55,11 +56,13 @@ Route::group(['middleware' => ['auth']], function () {
         Route::resource('detail-tagihan-spp', DetailTagihanSPPController::class);
         Route::get('/tagihan-spp/kelas/{id}', [TagihanSppController::class, 'kelas']);
         Route::post('/tagihan-spp/send-notif', [TagihanSppController::class, 'sendNotif']);
+        Route::resource('tagihan-lainnya', TagihanLainnyaController::class);
         Route::resource('kelas', KelasController::class);
         Route::resource('pembayaran', PembayaranController::class);
         Route::post('/pembayaran/pay', [PembayaranController::class, 'pay']);
         Route::get('/pembayaran/get-tagihan/', [PembayaranController::class, 'tagihan']);
         Route::resource('laporan-tunggakan', LaporanTunggakanController::class);
+        Route::get('laporan-tunggakan/export', [LaporanTunggakanController::class, 'exportTunggakan']);
     });
     Route::group(['middleware' => ['cekUserLogin:2']], function () {
         // Route::resource('wali-kelas', WaliKelas::class);
