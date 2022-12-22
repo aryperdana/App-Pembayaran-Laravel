@@ -170,6 +170,7 @@
                     harga: harga,
                     status_pembayaran: 0,
                     tunai: 0,
+                    lainnya: 0,
                 }
             });
 

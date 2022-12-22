@@ -20,4 +20,10 @@ class Siswa extends Model
     {
         return $this->hasOne(DetailTagihanSPP::class);
     }
+
+    public function detail_kelass()
+    {
+        return $this->hasOne(DetailKelas::class);
+    }
+
 }

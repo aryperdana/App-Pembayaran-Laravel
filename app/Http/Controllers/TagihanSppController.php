@@ -103,6 +103,7 @@ class TagihanSppController extends Controller
                     'harga' => $value['harga'],
                     'status_pembayaran' => $value['status_pembayaran'],
                     'tunai' => $value['tunai'],
+                    'lainnya' => $value['lainnya'],
                 );
 
                 $detail_tagihan = DetailTagihanSPP::create($detail_tagihan);
@@ -146,7 +147,7 @@ class TagihanSppController extends Controller
 
         if ($request->ajax()) {
             $sid    = "ACd529b8c3afd7bec46cb62c981a991fd0"; 
-            $token  = "1K4BWwQHdHaw1rCwU3fJME4wWKTVFvd13M"; 
+            $token  = "18b759884d658a547af312972839cb37"; 
             $twilio = new Client($sid, $token); 
 
 

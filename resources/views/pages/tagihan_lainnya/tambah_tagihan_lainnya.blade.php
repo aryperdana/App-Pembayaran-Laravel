@@ -1,20 +1,20 @@
 @extends('layout.main')
 
 @section('judul')
-    Tagihan SPP
+    Tagihan Lainnya
 @endsection
 
 @section('isi')
 <div class="d-flex justify-content-between mb-2">
-    <b>Tambah Tagihan SPP</b>
-    <a href="{{ route('tagihan-spp.index')}}" class="btn btn-sm btn-outline-secondary"><i class="fas fa-arrow-left mr-2"></i>Kembali</a>
+    <b>Tambah Tagihan Lainnya</b>
+    <a href="{{ route('tagihan-lainnya.index')}}" class="btn btn-sm btn-outline-secondary"><i class="fas fa-arrow-left mr-2"></i>Kembali</a>
 </div>
 <div class="card">
     {{-- <form action="{{ route('tagihan-spp.store') }}" method="POST" enctype="multipart/form-data"> --}}
         @csrf
         <div class="card-body">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for="id_jenis_tagihan">Jenis Tagihan</label>
                         <select class="form-control" id="id_jenis_tagihan" name="id_jenis_tagihan">
@@ -23,6 +23,12 @@
                                 <option value="{{ $item->id }}">{{ $item->nama_jenis_tagihan }}</option>
                             @endforeach
                         </select>
+                    </div>
+                </div>
+                 <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="harga">Harga</label>
+                        <input type="text" class="form-control" name="harga" id="harga" placeholder="Masukan Harga">
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -66,27 +72,15 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-6">
+                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="harga">Harga</label>
-                        <input type="text" class="form-control" name="harga" id="harga" placeholder="Masukan Harga">
+                        <label for="id_siswa">Siswa</label>
+                        <select class="form-control" id="id_siswa" name="id_siswa">
+                            <option value="none">Pilih Kelas Terlebih Dahulu</option>
+                        </select>
                     </div>
                 </div>
             </div>
-
-            <div class="row">
-                <table class="table table-bordered table-hover text-nowrap" id="table_siswa">
-                    <thead>
-                        <tr>
-                        <th scope="col" class="text-center" style="width: 30px">No.</th>
-                        <th scope="col" class="text-center">Nama Siswa</th>
-                        </tr>
-                    </thead>
-                    <tbody id="listSiswa">
-                    </tbody>
-                </table>
-            </div>
-
         </div>
 
         
@@ -99,7 +93,6 @@
 
 <script>
     $(document).ready(function () {
-        let dataListGlobal = []
         const dataSiswa = []
 
         $.ajaxSetup({
@@ -108,54 +101,31 @@
             }
         });
 
-        // $('#listSiswa').append("<tr>\
-        //         <td colSpan='2' class='text-center align-middle' height='100'><b>Pilih Kelas</b></td>\
-        //         </tr>");
+        $("#id_kelas").change(function (e) { 
+            e.preventDefault();
+            $("#id_siswa option").remove(); 
+            $('#id_siswa')
+                .append($("<option></option>")
+                .attr("value", "none")
+                .text("Pilih Siswa")); 
 
-        
-        $(document).on('change', ".getKelas", function () {
-            let id_kelas = $("#id_kelas").val();
+            let id_kelas = $("#id_kelas").val()
+            const siswa = <?php echo json_encode($siswa); ?>;
+            const mapSiswa = siswa.filter(val => parseInt(val.id_kelas) === parseInt(id_kelas));
 
-            if (id_kelas !== 'none') {   
-                $.ajax({
-                    type:"GET",
-                    dataType:"json",
-                    url: 'kelas/' + id_kelas,
-                    success:function(response){
-                        let dataList = [];
-
-                        response.data.map((val) => {
-                            const obj = {
-                                id_siswa: val.id_siswa,
-                                nama_siswa: response.siswa.find((res) => val.id_siswa === res.id).nama_siswa
-                            }
-                            
-                            dataList.push(obj)
-                        })
-
-                        dataListGlobal.push(...dataList)
-                        dataSiswa.push(...response.siswa)
-
-                        console.log(dataList);
-
-                        $.each(dataList, function (key, value) {
-                     
-							$('#listSiswa').append("<tr>\
-                                        <td>"+parseInt(key + 1)+"</td>\
-										<td>"+value.nama_siswa+"</td>\
-										</tr>");
-						})
-                    }
-                }) 
-            }  
+            $.each(mapSiswa, function(key, value) {   
+                $('#id_siswa')
+                .append($("<option></option>")
+                .attr("value", value.id_siswa)
+                .text(value.siswa.nama_siswa)); 
+            });
         });
-
-        
 
 
         $(document).on('click', "#simpan", function () {
             let id_jenis_tagihan = $("#id_jenis_tagihan").val();
             let id_kelas = $("#id_kelas").val();
+            let id_siswa = $("#id_siswa").val()
             let bulan = $("#bulan").val();
             let semester = $("#semester").val();
             let harga = $("#harga").val();
@@ -163,27 +133,17 @@
             let keterangan = "cekk 123"
             
 
-            let dataDetail = dataListGlobal.map((val) => {
-                return {
-                    id_siswa: val.id_siswa,
-                    id_jenis_tagihan: id_jenis_tagihan,
-                    harga: harga,
-                    status_pembayaran: 0,
-                    tunai: 0,
-                }
-            });
-
-            let dataSiswaMaping = dataSiswa.map((val) => {
-                const no_telp_edit = val?.no_telp?.split('').map((res, ind) => ind === 0 ? "+62" : res).join('')
-                return {
-                    ...val,
-                    no_telp: no_telp_edit,
-                }
-            })
-
+            let dataDetail = [{
+                id_siswa: id_siswa,
+                id_jenis_tagihan: id_jenis_tagihan,
+                harga: harga,
+                status_pembayaran: 0,
+                tunai: 0,
+                lainnya: 1,
+            }]
             $.ajax({
                 type: "post",
-                url: "{{ route('tagihan-spp.store') }}",
+                url: "{{ route('tagihan-lainnya.store') }}",
                 data: {
                     id_kelas : id_kelas,
                     bulan : bulan,
@@ -192,11 +152,10 @@
                     no_tagihan : no_tagihan,
                     keterangan : keterangan,
                     detail_tagihan : dataDetail,
-                    data_siswa : dataSiswaMaping,
                     "_token" : "{{ csrf_token() }}"
                 },
                 success: function (res) {
-                    window.location.href = "{{url('/tagihan-spp')}}";
+                    window.location.href = "{{url('/tagihan-lainnya')}}";
                 },
                 error: function (err) {
                     console.error(err);
