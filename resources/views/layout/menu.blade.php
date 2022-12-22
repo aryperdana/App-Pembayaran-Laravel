@@ -16,14 +16,14 @@
             </p>
         </a>
     </li> --}}
-    <li class="nav-item">
+    {{-- <li class="nav-item">
         <a href="{{ url('guru') }}" class="nav-link">
             <i class="nav-icon fas fa-user"></i>
             <p>
                 Guru
             </p>
         </a>
-    </li>
+    </li> --}}
     <li class="nav-item">
         <a href="{{ url('user') }}" class="nav-link">
             <i class="nav-icon fas fa-users"></i>
@@ -32,29 +32,20 @@
             </p>
         </a>
     </li>
-    <li class="nav-item">
+    {{-- <li class="nav-item">
         <a href="{{ url('siswa') }}" class="nav-link">
             <i class="nav-icon fas fa-database"></i>
             <p>
                 Siswa
             </p>
         </a>
-    </li>
+    </li> --}}
  
-    <li class="nav-item">
+    {{-- <li class="nav-item">
         <a href="{{ url('wali-murid') }}" class="nav-link">
             <i class="nav-icon fas fa-file"></i>
             <p>
                 Wali Murid
-            </p>
-        </a>
-    </li>
-
-    {{-- <li class="nav-item">
-        <a href="{{ url('jenis-tagihan') }}" class="nav-link">
-            <i class="nav-icon fas fa-file"></i>
-            <p>
-                Jenis Tagihan
             </p>
         </a>
     </li> --}}
@@ -68,14 +59,35 @@
         </a>
     </li>
 
-    {{-- <li class="nav-item">
-        <a href="{{ url('tagihan-spp') }}" class="nav-link">
-            <i class="nav-icon fas fa-file"></i>
-            <p>
-                Tagihan SPP
-            </p>
+    <li class="nav-item">
+        <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-database"></i>
+          <p>
+            Master
+            <i class="right fas fa-angle-left"></i>
+          </p>
         </a>
-    </li> --}}
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="{{ url('siswa') }}" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Siswa</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url('wali-murid') }}" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Wali Murid</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url('guru') }}" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Guru</p>
+            </a>
+          </li>
+        </ul>
+      </li>
 
     <li class="nav-item">
         <a href="#" class="nav-link">

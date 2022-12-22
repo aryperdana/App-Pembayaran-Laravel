@@ -81,7 +81,7 @@
                             </div>
                         </td>
                         <td>
-                            <button class="btn btn-sm btn-danger" id="hapus"><i class="fas fa-trash"></i></button>
+                            <button class="btn btn-sm btn-danger" onclick="hapus(this)" id="hapus"><i class="fas fa-trash"></i></button>
                         </td>
                     </tr>
                     @endforeach
@@ -119,8 +119,14 @@
         
 
         $(document).on('click', '#hapus', function () {
+            console.log($(this));
             let hapus = $(this).data('row')
+            console.log(hapus);
             $("#" + hapus).remove();
+        });
+
+        $('#hapus').click(function() {
+            $(this).closest("tr").remove();
         });
 
         $(document).on('click', "#simpan", function () {

@@ -144,12 +144,13 @@
 
 <script type="text/javascript">
     const arr = []
+    const idSelected = []
     const dataSiswa = <?php echo json_encode($data); ?>;
    
 
     const user = <?php echo json_encode($user); ?>;
 
-     const idSelected = []
+     
     $('.check_box').change(function check(){
 
         $('.check_box').each(function(idx, el){
@@ -164,8 +165,11 @@
                     }).get();
                     
 
-                    const start = parseInt(searchIDs.length - 2)
-                    searchIDs.splice(start, 2)
+                    const start = parseInt(searchIDs.length - 1)
+                    console.log("data", searchIDs);
+                    console.log("length", start);
+                    searchIDs.splice(start, 1)
+                    console.log("cek", searchIDs);
                     idSelected.splice(0, idSelected.length, ...searchIDs);
 
                 } else {
@@ -192,10 +196,10 @@
 
     });
 
-    console.log(dataSiswa);
     
 
     $('#pay-tunai-button').click(function (e) { 
+        console.log("idSelected", idSelected);
         const mapDataSelected = idSelected.map((val) => {
             const dataSelected = dataSiswa.find((res) => parseInt(res.id) === parseInt(val))
             return {
@@ -247,8 +251,8 @@
                 success: function (res) {
                     console.log(val, res);
                     const data = res.tagihan.find((item) => parseInt(item.id) === parseInt(val))
-                    const end = arr.length - 1;
-                    arr.splice(0, end, data)
+                    // const end = arr.length - 1;
+                    arr.splice(0, 0, data)
                 },
                 error: function (err) {
                     console.log("err",err);
@@ -258,9 +262,11 @@
        
         
     });
+    console.log("dataSIswa", dataSiswa);
 
     $('#simpan-tunai').click(function (e) { 
-        const findDaveData = arr.map((val) => val.id_jenis_tagihan ? dataSiswa.find((item) => item.jenis_tagihan.id === val.id_jenis_tagihan) : "")
+        console.log("arr",arr);
+        const findDaveData = arr.map((val) =>  dataSiswa.find((item) => item.id === val.id))
         const mapSaveData = findDaveData.map((val) => ({
             id_tagihan_spp : val.id_tagihan_spp,
             id_siswa : val.id_siswa,
@@ -271,6 +277,9 @@
             lainnya: val.lainnya,
         }))
         const mapDeleteData = findDaveData.map((val) => val.id_tagihan_spp)
+
+        console.log("seve", mapSaveData);
+        console.log("delete", mapDeleteData);
 
         $.ajax({
             type: "post",
