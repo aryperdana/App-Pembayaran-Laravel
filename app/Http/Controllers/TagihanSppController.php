@@ -22,7 +22,9 @@ class TagihanSppController extends Controller
     public function index(Request $request)
     {
         $key = $request->key;
-        $tagihan = TagihanSpp::paginate(10);
+        $tagihan = TagihanSpp::whereHas('detail_tagihan', function($query) {
+            $query->where("lainnya", 0);
+        })->get();
         return view('pages.tagihan_spp.tagihan_spp')->with([
             'user' => Auth::user(),
             'data' => $tagihan,
@@ -147,7 +149,7 @@ class TagihanSppController extends Controller
 
         if ($request->ajax()) {
             $sid    = "ACd529b8c3afd7bec46cb62c981a991fd0"; 
-            $token  = "18b759884d658a547af312972839cb37"; 
+            $token  = "109c1d6bac03f42489fe568560cc6910"; 
             $twilio = new Client($sid, $token); 
 
 

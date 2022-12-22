@@ -28,7 +28,7 @@
     </form>
     {{-- <form action="{{ url('laporan-tunggakan/export/') }}" method="GET"> --}}
         <div>
-            <a href="{{ url('laporan-tunggakan/export/') }}" class="btn btn-success">Export Excel</a>
+            <a href="{{ url('/export') }}" class="btn btn-success">Export Excel</a>
         </div>
     {{-- </form> --}}
     </div>
@@ -46,6 +46,7 @@
                 <th scope="col" class="text-center">Nama Siswa</th>
                 <th scope="col" class="text-center">Jenis Tagihan</th>
                 <th scope="col" class="text-center">Harga</th>
+                <th scope="col" class="text-center">Status Pembayaran</th>
                 </tr>
             </thead>
             <tbody>
@@ -97,6 +98,13 @@
                     <td>{{ $hasil->siswa->nama_siswa }}</td>
                     <td>{{ $hasil->jenisTagihan->nama_jenis_tagihan }}</td>
                     <td>Rp. {{ number_format($hasil->harga,0, ',' , '.') }}</td>
+                    <td class="text-center" style="width: 100px">
+                        @if ($hasil->status_pembayaran === 1)
+                            <button disabled class="btn btn-sm btn-outline-success btn-block">Lunas</button>
+                        @else
+                            <button disabled class="btn btn-sm btn-outline-danger btn-block">Belum Lunas</button>
+                        @endif
+                    </td>
                 </tr>
                 @endforeach
             </tbody>

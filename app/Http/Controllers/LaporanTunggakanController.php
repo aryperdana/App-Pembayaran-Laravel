@@ -44,7 +44,8 @@ class LaporanTunggakanController extends Controller
 
     public function exportTunggakan()
     {
-        return Excel::download(new TunggakanExport, 'users.xlsx');
+        // dd();
+        return Excel::download(new TunggakanExport, 'tunggakan.xlsx');
     }
 
     /**

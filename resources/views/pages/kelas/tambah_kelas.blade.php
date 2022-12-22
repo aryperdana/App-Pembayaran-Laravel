@@ -22,9 +22,9 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="id_guru">Wali Murid</label>
+                        <label for="id_guru">Wali Kelas</label>
                         <select class="form-control" id="id_guru" name="id_guru">
-                            <option value="none">Pilih Wali Murid</option>
+                            <option value="none">Pilih Wali Kelas</option>
                             @foreach ($guru as $item)
                                 <option value="{{ $item->id }}">{{ $item->nama_guru }}</option>
                             @endforeach
@@ -34,7 +34,7 @@
                 <div class="col-md-2">
                     <div class="form-group">
                         <label for="tahun_ajaran">Tahun Ajaran</label>
-                        <input type="tahun_ajaran" class="form-control" name="tahun_ajaran" id="tahun_ajaran" placeholder="Masukan Email">
+                        <input type="tahun_ajaran" class="form-control" name="tahun_ajaran" id="tahun_ajaran" placeholder="Masukan Tahun Ajaran">
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -125,9 +125,8 @@
             // let nama_siswa
 
             $('.id_siswa').each(function () {
-                dataSiswa.push(this.value)
+                this.value !== "" && dataSiswa.push(this.value)
             });
-
 
             $.ajax({
                 type: "post",

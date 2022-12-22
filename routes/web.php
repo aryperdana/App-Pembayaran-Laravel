@@ -62,7 +62,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/pembayaran/pay', [PembayaranController::class, 'pay']);
         Route::get('/pembayaran/get-tagihan/', [PembayaranController::class, 'tagihan']);
         Route::resource('laporan-tunggakan', LaporanTunggakanController::class);
-        Route::get('laporan-tunggakan/export', [LaporanTunggakanController::class, 'exportTunggakan']);
+        Route::get('/export',[LaporanTunggakanController::class,'exportTunggakan'])->name('export');
+        // Route::get('/laporan-tunggakan/export/', [LaporanTunggakanController::class, 'exportTunggakan']);
     });
     Route::group(['middleware' => ['cekUserLogin:2']], function () {
         // Route::resource('wali-kelas', WaliKelas::class);

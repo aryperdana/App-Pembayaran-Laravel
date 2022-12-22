@@ -268,6 +268,7 @@
             harga : val.harga,
             status_pembayaran : 1,
             tunai : 1,
+            lainnya: val.lainnya,
         }))
         const mapDeleteData = findDaveData.map((val) => val.id_tagihan_spp)
 

@@ -9,6 +9,12 @@
     <b>Detail Tagihan Lainnya</b>
     <a href="{{ route('tagihan-lainnya.index')}}" class="btn btn-sm btn-outline-secondary"><i class="fas fa-arrow-left mr-2"></i>Kembali</a>
 </div>
+<div class="alert alert-primary" role="alert" id="notifAlert">
+    Notifikasi Berhasil Dikirim!
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
 <div class="card">
     {{-- <form action="{{ route('tagihan-spp.store') }}" method="POST" enctype="multipart/form-data"> --}}
         @csrf
@@ -81,6 +87,15 @@
                         </select>
                     </div>
                 </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="message">Pesan Notifikasi</label>
+                        <textarea class="form-control" name="message" id="message" placeholder="Masukan Pesan" rows="4"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <button class="btn btn-primary btn-sm" id="send-notif">Kirim Notifikasi</button>
             </div>
         </div>
         
@@ -100,10 +115,47 @@
         const idSiswa = <?php echo json_encode($data->id_siswa); ?>;
         const siswa = <?php echo json_encode($siswa); ?>;
 
+      
+
+        let dataSiswaMaping = siswa.map((val) => {
+                const no_telp_edit = val.siswa?.no_telp?.split('').map((res, ind) => ind === 0 ? "+62" : res).join('')
+                console.log(no_telp_edit);
+                return {
+                    ...val.siswa,
+                    no_telp: no_telp_edit,
+                }
+            })
+
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
             }
+        });
+
+        $("#notifAlert").hide()
+
+
+        $("#send-notif").click(function (e) { 
+            e.preventDefault();
+
+            let message = $("#message").val();
+
+            $.ajax({
+                type: "post",
+                url: "http://127.0.0.1:8000/tagihan-spp/send-notif",
+                data: {
+                    data_siswa : dataSiswaMaping,
+                    message : message,
+                    "_token" : "{{ csrf_token() }}"
+                },
+                success: function (res) {
+                    $("#notifAlert").show()
+                },
+                error: function (err) {
+                    console.error(err);
+                }
+            });
+            
         });
 
 

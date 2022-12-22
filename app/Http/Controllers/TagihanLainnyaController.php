@@ -19,7 +19,7 @@ class TagihanLainnyaController extends Controller
      */
     public function index()
     {
-        $tagihan = DetailTagihanSPP::where("lainnya", 1)->where('status_pembayaran', 0)->get();
+        $tagihan = DetailTagihanSPP::where("lainnya", 1)->get();
         return view('pages.tagihan_lainnya.tagihan_lainnya')->with([
             'user' => Auth::user(),
             'data' => $tagihan,
