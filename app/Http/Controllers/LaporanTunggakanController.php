@@ -42,10 +42,17 @@ class LaporanTunggakanController extends Controller
         ]);
     }
 
-    public function exportTunggakan()
+    public function exportTunggakan($start_date, $end_date)
     {
-        // dd();
-        return Excel::download(new TunggakanExport, 'tunggakan.xlsx');
+        if ($start_date || $end_date) {
+            $start_date = Carbon::parse($start_date)->toDateTimeString();
+            $end_date = Carbon::parse($end_date)->toDateTimeString();
+            $data = DetailTagihanSPP::whereBetween('created_at',[$start_date,$end_date])->get();
+        } else {
+            $data = DetailTagihanSPP::whereBetween('created_at',[$start_date,$end_date])->latest()->get();
+        }
+
+        return Excel::download(new TunggakanExport($data), 'tunggakan.xlsx');
     }
 
     /**

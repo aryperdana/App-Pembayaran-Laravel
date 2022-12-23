@@ -9,11 +9,11 @@
     <div class="d-flex justify-content-between"> 
         <div class="form-group col-4">
             <label for="">Tanggal Awal</label>
-            <input type="date" placeholder="Tanggal Awal" name="start_date" value="{{ $start_date }}" class="form-control float-right">
+            <input type="date" placeholder="Tanggal Awal" id="start_date" name="start_date" value="{{ $start_date }}" class="form-control float-right">
         </div>
         <div class="form-group col-4">
             <label for="">Tanggal Akhir</label>
-            <input type="date" placeholder="Tanggal Akhir" name="end_date" value="{{ $end_date }}" class="form-control float-right">
+            <input type="date" placeholder="Tanggal Akhir" id="end_date" name="end_date" value="{{ $end_date }}" class="form-control float-right">
         </div>
     </div>
     <div class="d-flex justify-content-between mb-3"> 
@@ -25,11 +25,13 @@
                 <button class="btn btn-primary ml-3">Cari</button>
             </div>
         </div>
+        <div>
+            {{-- href="{{ url('/export') }}" --}}
+            <a id="export-button" class="btn btn-success">Export Excel</a>
+        </div>
     </form>
     {{-- <form action="{{ url('laporan-tunggakan/export/') }}" method="GET"> --}}
-        <div>
-            <a href="{{ url('/export') }}" class="btn btn-success">Export Excel</a>
-        </div>
+        
     {{-- </form> --}}
     </div>
 <div class="card">
@@ -167,6 +169,41 @@
                
             }
 
+        });
+
+    });
+
+    $('#export-button').click(function (e) { 
+        e.preventDefault();
+
+        let start_date = $("#start_date").val();
+        let end_date = $("#end_date").val();
+
+        $.ajax({
+            type: "get",
+            xhrFields: { responseType: 'blob',},
+            url: `{{ url('/export/${start_date}/${end_date}') }}`,
+            success: function (result, status, xhr) {
+                var disposition = xhr.getResponseHeader('content-disposition');
+                var matches = /"([^"]*)"/.exec(disposition);
+                var filename = (matches != null && matches[1] ? matches[1] : 'Tunggakan.xlsx');
+
+                // The actual download
+                var blob = new Blob([result], {
+                    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                });
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = filename;
+
+                document.body.appendChild(link);
+
+                link.click();
+                document.body.removeChild(link);
+            },
+            error: function (err) {
+                console.log("err",err);
+            }
         });
 
     });
