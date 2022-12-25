@@ -275,6 +275,7 @@
             status_pembayaran : 1,
             tunai : 1,
             lainnya: val.lainnya,
+            bank_transfer: null,
         }))
         const mapDeleteData = findDaveData.map((val) => val.id_tagihan_spp)
 
@@ -314,8 +315,10 @@
         harga : val.harga,
         status_pembayaran : 1,
         tunai : 0,
+        lainnya: val.lainnya,
       }))
       const mapDeleteData = findDaveData.map((val) => val.id_tagihan_spp)
+
 
       $.ajax({
             type: "post",
@@ -336,12 +339,13 @@
                 window.snap.pay(res, {
                     onSuccess: function(result){
                     /* You may add your own implementation here */
-                    alert("payment success!"); console.log(result);
+                    alert("payment success!"); console.log(result?.va_numbers[0].bank);
+                    const detailSave = mapSaveData.map(val => ({...val, bank_transfer:result?.va_numbers[0].bank})) 
                     $.ajax({
                         type: "post",
                         url:"{{ route('pembayaran.store') }}",  
                         data:{
-                            detail: mapSaveData,
+                            detail: detailSave,
                             delete: mapDeleteData,
                             "_token" : "{{ csrf_token() }}"
                         },                              

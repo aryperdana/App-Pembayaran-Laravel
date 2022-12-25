@@ -15,6 +15,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\WaliMuridController;
 use App\Http\Controllers\DetailTagihanSPPController;
 use App\Http\Controllers\LaporanTunggakanController;
+use App\Http\Controllers\LaporanArusKasController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -62,6 +63,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/pembayaran/pay', [PembayaranController::class, 'pay']);
         Route::get('/pembayaran/get-tagihan/', [PembayaranController::class, 'tagihan']);
         Route::resource('laporan-tunggakan', LaporanTunggakanController::class);
+        Route::resource('laporan-arus-kas', LaporanArusKasController::class);
         Route::get('/export/{start_date}/{end_date}',[LaporanTunggakanController::class,'exportTunggakan'])->name('export');
         // Route::get('/laporan-tunggakan/export/', [LaporanTunggakanController::class, 'exportTunggakan']);
     });

@@ -18,7 +18,7 @@ class Siswa extends Model
 
     public function detailTagihanSpp()
     {
-        return $this->hasOne(DetailTagihanSPP::class);
+        return $this->hasMany(DetailTagihanSPP::class, "id_siswa");
     }
 
     public function detail_kelass()

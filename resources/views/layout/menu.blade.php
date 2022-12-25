@@ -143,12 +143,12 @@
               <p>Laporan Tunggakan</p>
             </a>
           </li>
-          {{-- <li class="nav-item">
-            <a href="{{ url('tagihan-spp') }}" class="nav-link">
+          <li class="nav-item">
+            <a href="{{ url('laporan-arus-kas') }}" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
-              <p>Tagihan</p>
+              <p>Laporan Arus Kas</p>
             </a>
-          </li> --}}
+          </li>
         </ul>
       </li>
 @endif

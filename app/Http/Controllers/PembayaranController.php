@@ -68,6 +68,7 @@ class PembayaranController extends Controller
                 'status_pembayaran' => $value['status_pembayaran'],
                 'tunai' => $value['tunai'],  
                 'lainnya' => $value['lainnya'],
+                'bank_transfer' => $value['bank_transfer']
             );
 
             $detail_tagihan = DetailTagihanSPP::create($detail_tagihan);
@@ -110,7 +111,10 @@ class PembayaranController extends Controller
                 'email' => $request->email,
                 'phone' => $request->phone,
             ),
-            'item_details' => $iten_details
+            'item_details' => $iten_details,
+            'enabled_payments' =>  array(
+                "bank_transfer",
+            )
         );
 
         $snapToken = \Midtrans\Snap::getSnapToken($params);
