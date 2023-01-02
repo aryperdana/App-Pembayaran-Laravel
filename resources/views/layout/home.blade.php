@@ -5,56 +5,103 @@
 @endsection
 
 @section('isi')
-    <div class="d-flex">
-        <div class="card" style="width: 18rem">
-            <div class="card-body">
-                <div class="d-flex">
-                    <i class="nav-icon fas fa-user" style="font-size: 50px"></i>
-                    <div class="ml-4">
-                        <div><b>Jumlah Siswa</b></div>
-                        <div>{{ $jumlah_siswa }} Orang</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="card ml-3" style="width: 18rem">
-            <div class="card-body">
-                <div class="d-flex">
-                    <i class="nav-icon fas fa-users" style="font-size: 50px"></i>
-                    <div class="ml-4">
-                        <div><b>Jumlah User</b></div>
-                        <div>{{ $jumlah_user }} Orang</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="card">
-        {{-- <div class="card-header">
-            <h3 class="card-title">Dashboard</h3>
-            <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                    <i class="fas fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-        </div> --}}
-        
+@if ($user->level == 1)
+<div class="d-flex">
+    <div class="card" style="width: 18rem">
         <div class="card-body">
-            <div class="d-flex justify-content-center">
-                <div style="width: 500px">
-                    <canvas id="myChart"></canvas>
+            <div class="d-flex">
+                <i class="nav-icon fas fa-user" style="font-size: 50px"></i>
+                <div class="ml-4">
+                    <div><b>Jumlah Siswa</b></div>
+                    <div>{{ $jumlah_siswa }} Orang</div>
                 </div>
             </div>
         </div>
-        <!-- /.card-body -->
-        {{-- <div class="card-footer">
-            Footer
-        </div> --}}
-        <!-- /.card-footer-->
     </div>
+    <div class="card ml-3" style="width: 18rem">
+        <div class="card-body">
+            <div class="d-flex">
+                <i class="nav-icon fas fa-users" style="font-size: 50px"></i>
+                <div class="ml-4">
+                    <div><b>Jumlah User</b></div>
+                    <div>{{ $jumlah_user }} Orang</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    {{-- <div class="card-header">
+        <h3 class="card-title">Dashboard</h3>
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                <i class="fas fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div> --}}
+    
+    <div class="card-body">
+        <div class="d-flex justify-content-center">
+            <div style="width: 500px">
+                <canvas id="myChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <!-- /.card-body -->
+    {{-- <div class="card-footer">
+        Footer
+    </div> --}}
+    <!-- /.card-footer-->
+</div>
+@endif
+@if ($user->level == 2)
+<div class="card">
+    <div class="card-body">
+        <h3>Selamat Datang!</h3>
+    </div>
+</div>
+<div class="d-flex">
+    <div class="card" style="width: 40rem">
+        <div class="card-body">
+            <div class="d-flex">
+                <i class="nav-icon fas fa-user" style="font-size: 50px"></i>
+                <div class="ml-4">
+                    <div class="d-flex">
+                        <div style="width: 60px"><b>Nama</b></div>
+                        <div class="mx-3"><b>:</b></div>
+                        <div><b>{{ $guru[0]->nama_guru }}</b></div>
+                    </div>
+                    <div class="d-flex">
+                        <div style="width: 60px"><b>NIP</b></div>
+                        <div class="mx-3"><b>:</b></div>
+                        <div><b>{{ $guru[0]->nip }}</b></div>
+                    </div>
+                    <div class="d-flex">
+                        <div style="width: 60px"><b>Jabatan</b></div>
+                        <div class="mx-3"><b>:</b></div>
+                        <div><b>{{ $guru[0]->jabatan }}</b></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card ml-3" style="width: 40rem">
+        <div class="card-body">
+            <div class="d-flex">
+                <i class="nav-icon fas fa-file" style="font-size: 50px"></i>
+                <div class="ml-4">
+                    <div><b>Jumlah Tunggakan</b></div>
+                    <div>{{ $jumlah_tunggakan }} Tunggakan</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
+    
     <script>
         const ctx = document.getElementById('myChart');
 

@@ -6,6 +6,7 @@ use App\Models\JenisTagihan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+
 class JenisTagihanController extends Controller
 {
     /**
@@ -56,6 +57,7 @@ class JenisTagihanController extends Controller
         $jenis_tagihan->nama_jenis_tagihan = $request->nama_jenis_tagihan;
         $jenis_tagihan->no_akun = $request->no_akun;
         $jenis_tagihan->nama_akun = $request->nama_akun;
+        $jenis_tagihan->harga = $request->harga;
         $jenis_tagihan->keterangan = $request->keterangan;
         $jenis_tagihan->save();
 
@@ -103,6 +105,9 @@ class JenisTagihanController extends Controller
 
         $jenis_tagihan = JenisTagihan::find($id);
         $jenis_tagihan->nama_jenis_tagihan = $request->nama_jenis_tagihan;
+        $jenis_tagihan->no_akun = $request->no_akun;
+        $jenis_tagihan->nama_akun = $request->nama_akun;
+        $jenis_tagihan->harga = $request->harga;
         $jenis_tagihan->keterangan = $request->keterangan;
         $jenis_tagihan->save();
 

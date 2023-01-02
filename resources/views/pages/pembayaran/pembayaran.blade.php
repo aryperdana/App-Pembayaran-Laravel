@@ -262,10 +262,9 @@
        
         
     });
-    console.log("dataSIswa", dataSiswa);
+
 
     $('#simpan-tunai').click(function (e) { 
-        console.log("arr",arr);
         const findDaveData = arr.map((val) =>  dataSiswa.find((item) => item.id === val.id))
         const mapSaveData = findDaveData.map((val) => ({
             id_tagihan_spp : val.id_tagihan_spp,
@@ -275,9 +274,10 @@
             status_pembayaran : 1,
             tunai : 1,
             lainnya: val.lainnya,
+            tenggat: val.tenggat,
             bank_transfer: null,
         }))
-        const mapDeleteData = findDaveData.map((val) => val.id_tagihan_spp)
+        const mapDeleteData = findDaveData.map((val) => val.id)
 
         console.log("seve", mapSaveData);
         console.log("delete", mapDeleteData);
@@ -316,7 +316,9 @@
         status_pembayaran : 1,
         tunai : 0,
         lainnya: val.lainnya,
+        tenggat: val.tenggat,
       }))
+      
       const mapDeleteData = findDaveData.map((val) => val.id_tagihan_spp)
 
 

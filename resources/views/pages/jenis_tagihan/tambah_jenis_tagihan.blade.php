@@ -26,6 +26,10 @@
                 <input type="text" class="form-control" name="nama_akun" id="nama_akun" placeholder="Masukan Nama Akun">
             </div>
             <div class="form-group">
+                <label for="harga">Harga</label>
+                <input type="number" class="form-control" name="harga" id="harga" placeholder="Masukan Harga">
+            </div>
+            <div class="form-group">
                 <label for="keterangan">Keterangan</label>
                 <input type="text" class="form-control" name="keterangan" id="keterangan" placeholder="Masukan Keterangan">
             </div>

@@ -33,6 +33,12 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
+                        <label for="tenggat">Tenggat</label>
+                        <input type="date" class="form-control" name="tenggat" id="tenggat" placeholder="Masukan Tenggat">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
                         <label for="semester">Semester</label>
                         <select class="form-control" id="semester" name="semester">
                             <option value="none">Pilih Semester</option>
@@ -112,6 +118,7 @@
             let id_kelas = $("#id_kelas").val()
             const siswa = <?php echo json_encode($siswa); ?>;
             const mapSiswa = siswa.filter(val => parseInt(val.id_kelas) === parseInt(id_kelas));
+            console.log(mapSiswa);
 
             $.each(mapSiswa, function(key, value) {   
                 $('#id_siswa')
@@ -129,6 +136,7 @@
             let bulan = $("#bulan").val();
             let semester = $("#semester").val();
             let harga = $("#harga").val();
+            let tenggat = $("#tenggat").val();
             let no_tagihan = "1234";
             let keterangan = "cekk 123"
             
@@ -137,6 +145,7 @@
                 id_siswa: id_siswa,
                 id_jenis_tagihan: id_jenis_tagihan,
                 harga: harga,
+                tenggat: tenggat,
                 status_pembayaran: 0,
                 tunai: 0,
                 lainnya: 1,

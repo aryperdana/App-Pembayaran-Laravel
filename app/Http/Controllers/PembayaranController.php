@@ -57,7 +57,7 @@ class PembayaranController extends Controller
 
         $iten_details = $request->detail;
         $item_delete = $request->delete;
-        DetailTagihanSPP::whereIn('id_tagihan_spp', $item_delete)->delete();
+        DetailTagihanSPP::whereIn('id', $item_delete)->delete();
 
          foreach ($iten_details as $key => $value) {
             $detail_tagihan = array(
@@ -68,7 +68,8 @@ class PembayaranController extends Controller
                 'status_pembayaran' => $value['status_pembayaran'],
                 'tunai' => $value['tunai'],  
                 'lainnya' => $value['lainnya'],
-                'bank_transfer' => $value['bank_transfer']
+                'bank_transfer' => $value['bank_transfer'],
+                'tenggat' => $value['tenggat'],
             );
 
             $detail_tagihan = DetailTagihanSPP::create($detail_tagihan);

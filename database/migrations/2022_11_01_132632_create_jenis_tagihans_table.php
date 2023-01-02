@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('nama_jenis_tagihan');
             $table->string('no_akun');
             $table->string('nama_akun');
+            $table->string('harga');
             $table->string('keterangan')->nullable();
             $table->timestamps();
         });

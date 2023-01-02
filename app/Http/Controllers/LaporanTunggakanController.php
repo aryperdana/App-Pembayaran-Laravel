@@ -31,7 +31,7 @@ class LaporanTunggakanController extends Controller
                 
             })->get();
         } else {
-            $data = DetailTagihanSPP::whereBetween('created_at',[$start_date,$end_date])->latest()->get();
+            $data = DetailTagihanSPP::all();
         }
         return view('pages.laporan_tunggakan.laporan_tunggakan')->with([
             'user' => Auth::user(),

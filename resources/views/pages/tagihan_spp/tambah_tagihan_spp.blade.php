@@ -14,7 +14,7 @@
         @csrf
         <div class="card-body">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for="id_jenis_tagihan">Jenis Tagihan</label>
                         <select class="form-control" id="id_jenis_tagihan" name="id_jenis_tagihan">
@@ -23,6 +23,12 @@
                                 <option value="{{ $item->id }}">{{ $item->nama_jenis_tagihan }}</option>
                             @endforeach
                         </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="tenggat">Tenggat</label>
+                        <input type="date" class="form-control" name="tenggat" id="tenggat" placeholder="Masukan Tenggat">
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -101,6 +107,7 @@
     $(document).ready(function () {
         let dataListGlobal = []
         const dataSiswa = []
+        
 
         $.ajaxSetup({
             headers: {
@@ -150,8 +157,16 @@
             }  
         });
 
-        
+        $("#id_jenis_tagihan").change(function (e) { 
+            e.preventDefault();
+            const id_jenis_tagihan = $("#id_jenis_tagihan").val();
+            const jenis = <?php echo json_encode($jenis_tagihan); ?>;
 
+            const filterHarga = jenis.find(val => parseInt(id_jenis_tagihan) === parseInt(val.id)).harga
+
+            $("#harga").val(filterHarga);
+            
+        });
 
         $(document).on('click', "#simpan", function () {
             let id_jenis_tagihan = $("#id_jenis_tagihan").val();
@@ -161,6 +176,7 @@
             let harga = $("#harga").val();
             let no_tagihan = "1234";
             let keterangan = "cekk 123"
+            let tenggat = $("#tenggat").val();
             
 
             let dataDetail = dataListGlobal.map((val) => {
@@ -171,6 +187,7 @@
                     status_pembayaran: 0,
                     tunai: 0,
                     lainnya: 0,
+                    tenggat:tenggat,
                 }
             });
 

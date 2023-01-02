@@ -6,7 +6,7 @@
 
 @section('isi')
 <div class="d-flex justify-content-between mb-3">
-    @if ($user->id_siswa == "0")
+    @if ($user->id_siswa == "0" && $user->level != 2)
     <a href="{{ route('guru.create') }}" class="btn btn-primary px-4">Tambah</a>  
     @else
         <div></div>           
@@ -26,7 +26,7 @@
             <thead>
                 <tr>
                 <th scope="col" class="text-center" style="width: 30px">No.</th>
-                @if ($user->id_siswa == "0")
+                @if ($user->id_siswa == "0" && $user->level != 2)
                 <th scope="col" class="text-center" style="width: 100px">Aksi</th>
                 @endif
                 <th scope="col" class="text-center">Nama</th>
@@ -40,7 +40,7 @@
                 @foreach ($data as $no => $hasil)
                 <tr>
                     <td>{{ $no + 1 }}</td>
-                    @if ($user->id_siswa == "0")
+                    @if ($user->id_siswa == "0" && $user->level != 2)
                     <td class="text-center">
                         <form action="{{ route('guru.destroy', $hasil->id) }}" method="POST">
                             @csrf

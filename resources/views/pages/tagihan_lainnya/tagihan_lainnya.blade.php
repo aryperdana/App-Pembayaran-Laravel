@@ -37,7 +37,7 @@
                 <tr>
                     <td>{{ $no + 1 }}</td>
                     <td class="text-center">
-                        <form action="{{ route('tagihan-lainnya.destroy', $hasil->id) }}" method="POST">
+                        <form action="{{ route('tagihan-lainnya.destroy', $hasil->id_tagihan_spp) }}" method="POST">
                             @csrf
                             @method('delete')
                             <div class="btn-group" role="group" aria-label="Basic example">

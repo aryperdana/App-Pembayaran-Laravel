@@ -8,6 +8,7 @@ use App\Http\Controllers\KontakGuruController;
 use App\Http\Controllers\LayoutController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PembayaranController;
+use App\Http\Controllers\TunggakanController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\TagihanSppController;
 use App\Http\Controllers\TagihanLainnyaController;
@@ -62,6 +63,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::resource('pembayaran', PembayaranController::class);
         Route::post('/pembayaran/pay', [PembayaranController::class, 'pay']);
         Route::get('/pembayaran/get-tagihan/', [PembayaranController::class, 'tagihan']);
+        Route::resource('tunggakan', TunggakanController::class);
         Route::resource('laporan-tunggakan', LaporanTunggakanController::class);
         Route::resource('laporan-arus-kas', LaporanArusKasController::class);
         Route::get('/export/{start_date}/{end_date}',[LaporanTunggakanController::class,'exportTunggakan'])->name('export');

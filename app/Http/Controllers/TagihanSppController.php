@@ -106,6 +106,7 @@ class TagihanSppController extends Controller
                     'status_pembayaran' => $value['status_pembayaran'],
                     'tunai' => $value['tunai'],
                     'lainnya' => $value['lainnya'],
+                    'tenggat' => $value['tenggat'],
                 );
 
                 $detail_tagihan = DetailTagihanSPP::create($detail_tagihan);

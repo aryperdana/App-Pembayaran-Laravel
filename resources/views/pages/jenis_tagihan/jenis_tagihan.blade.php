@@ -26,6 +26,7 @@
                 <th scope="col" class="text-center">Jenis Tagihan</th>
                 <th scope="col" class="text-center">No. Akun</th>
                 <th scope="col" class="text-center">Nama Akun</th>
+                <th scope="col" class="text-center">Harga</th>
                 <th scope="col" class="text-center">Keterangan</th>
                 </tr>
             </thead>
@@ -46,6 +47,7 @@
                     <td>{{ $hasil->nama_jenis_tagihan }}</td>
                     <td>{{ $hasil->no_akun }}</td>
                     <td>{{ $hasil->nama_akun }}</td>
+                    <td>Rp. {{ number_format($hasil->harga,0, ',' , '.') }}</td>
                     <td>{{ $hasil->keterangan }}</td>
                 </tr>
                 @endforeach

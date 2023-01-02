@@ -153,6 +153,25 @@
       </li>
 @endif
 
+@if ($user->level == 2)
+    <li class="nav-item">
+        <a href="{{ url('guru') }}" class="nav-link">
+            <i class="nav-icon fas fa-user"></i>
+            <p>
+                Guru
+            </p>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="{{ url('laporan-tunggakan') }}" class="nav-link">
+            <i class="nav-icon fas fa-file"></i>
+            <p>
+                Tunggakan
+            </p>
+        </a>
+    </li>
+@endif
+
 
 @if ($user->level == 3)
     <li class="nav-item">
