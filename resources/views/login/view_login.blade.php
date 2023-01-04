@@ -22,10 +22,11 @@
         <!-- /.login-logo -->
         <div class="card">
             <div class="card-header text-center">
-                <h1>Login</h1>
+                <img src="{{ asset('/') }}dist/img/gambar/logo.png" alt="logo" width="100px">
+                {{-- <h3>Login</h3> --}}
             </div>
             <div class="card-body">
-                <!-- <p class="login-box-msg">Sign in to start your session</p> -->
+                 <p class="login-box-msg">Sistem Pembayaran Sekolah</p> 
 
                 <form action="{{ url('login/proses') }}" method="post">
                     @csrf

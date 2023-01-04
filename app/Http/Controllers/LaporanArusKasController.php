@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\DetailTagihanSPP;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class LaporanArusKasController extends Controller
 {
@@ -14,10 +15,16 @@ class LaporanArusKasController extends Controller
      */
     public function index()
     {
-        $laporan = DetailTagihanSPP::where("status_pembayaran", 1)->get();
+        
+        $start_date = Carbon::now()->startOfMonth()->toDateString();
+        $end_date = Carbon::now()->endOfMonth()->toDateString();
+        $bulan = Carbon::now()->locale('id')->translatedFormat('F Y');
+        // dd($bulan);
+        $laporan = DetailTagihanSPP::whereBetween('created_at',[$start_date,$end_date])->where("status_pembayaran", 1)->get();
         return view('pages.laporan_arus_kas.laporan_arus_kas')->with([
             'user' => Auth::user(),
             'data' => $laporan,
+            'bulan' => $bulan,
         ]);
     }
 

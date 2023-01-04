@@ -38,7 +38,10 @@
                             @method('delete')
                             <div class="btn-group" role="group" aria-label="Basic example">
                                 <a href="{{ route('user.edit', $hasil->id) }}" class="btn btn-outline-success"><i class="fas fa-pen"></i></a>
+                                @if ($user->level == "1")
                                 <button class="btn btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                @endif
+                                <button type="button" data-toggle="modal" id="pay-tunai-button" class="btn btn-outline-secondary" data-target="#modal-tunai">Ubah Password</button>
                               </div>
                         </form>
                     </td>
@@ -54,6 +57,29 @@
 <div class="d-flex justify-content-center mt-3">
     {{ $data->withQueryString()->links('pagination::bootstrap-4') }}
 </div>
+
+<div class="modal" id="modal-tunai" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-md" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Ubah Passoword</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="content-modal">
+            <div class="form-group">
+                {{-- <label for="password">Password</label> --}}
+                <input type="password" class="form-control" name="password" id="password" placeholder="Masukan Password">
+            </div>
+        <div class="modal-footer">
+          <button id="simpan-tunai" class="btn btn-primary">Simpan</button>
+          {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
+        </div>
+      </div>
+    </div>
+  </div>
+
 
     
     {{-- <ul class="pagination pagination m-0">

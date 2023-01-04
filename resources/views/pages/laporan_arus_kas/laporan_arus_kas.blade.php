@@ -30,10 +30,30 @@
         </div>
     </form>
     </div> --}}
+<div class="d-flex justify-content-end">
+    <div class="form-group">
+        <select class="form-control" id="bulan" name="bulan" style="width: 300px">
+            <option value="none">Pilih Bulan</option>
+            <option value="1">Januari</option>
+            <option value="2">Februari</option>
+            <option value="3">Maret</option>
+            <option value="4">April</option>
+            <option value="5">Mei</option>
+            <option value="6">Juni</option>
+            <option value="7">Juli</option>
+            <option value="8">Agustus</option>
+            <option value="9">September</option>
+            <option value="10">Oktober</option>
+            <option value="11">November</option>
+            <option value="12">Desember</option>
+        </select>
+    </div>
+</div>
 <div class="card">
     <div class="card-body">
         <div class="text-center mb-4">
             <h3><b>Laporan Arus Kas</b></h3>
+            <p>{{ $bulan }}</p>
         </div>
         <div class="d-flex justify-content-center">
             <div class="row" style="width: 1000px" id="laporanData">

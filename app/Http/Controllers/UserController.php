@@ -15,9 +15,20 @@ class UserController extends Controller
     {
 
         $key = $request->key;
-        $user = User::where('name', 'LIKE', '%' . $key . '%')
+        $auth = Auth::user();
+        if ($auth->level == '1') {
+            $user = User::where('name', 'LIKE', '%' . $key . '%')
             ->orWhere('username', 'LIKE', '%' . $key . '%')
             ->orWhere('email', 'LIKE', '%' . $key . '%')->paginate(10);
+        }  
+        if ($auth->level == "2") {
+            $user = User::where('id_guru', $auth->id_guru)->paginate(10);
+            // dd($auth->id_guru);
+        }
+        if ($auth->level == "3") {
+            $user = User::where('id_siswa', $auth->id_siswa)->paginate(10);
+            // dd($auth->id_guru);
+        }
         return view('pages.user.user')->with([
             'user' => Auth::user(),
             'data' => $user
