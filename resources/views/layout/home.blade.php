@@ -31,18 +31,6 @@
     </div>
 </div>
 <div class="card">
-    {{-- <div class="card-header">
-        <h3 class="card-title">Dashboard</h3>
-        <div class="card-tools">
-            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                <i class="fas fa-minus"></i>
-            </button>
-            <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-    </div> --}}
-    
     <div class="card-body">
         <div class="d-flex justify-content-center">
             <div style="width: 500px">
@@ -50,11 +38,6 @@
             </div>
         </div>
     </div>
-    <!-- /.card-body -->
-    {{-- <div class="card-footer">
-        Footer
-    </div> --}}
-    <!-- /.card-footer-->
 </div>
 @endif
 @if ($user->level == 2)
@@ -96,6 +79,15 @@
                     <div><b>Jumlah Tunggakan</b></div>
                     <div>{{ $jumlah_tunggakan }} Tunggakan</div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex justify-content-center">
+            <div style="width: 500px">
+                <canvas id="myChart"></canvas>
             </div>
         </div>
     </div>

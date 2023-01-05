@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Siswa;
 use App\Models\User;
 use App\Models\Guru;
+use App\Models\Kelas;
+use App\Models\DetailKelas;
 use App\Models\DetailTagihanSPP;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,8 +14,26 @@ class LayoutController extends Controller
 {
     public function index()
     {
-        $siswa = Siswa::with("detailTagihanSPP")->get();
         $user = Auth::user();
+
+        $kelas = Kelas::where("id_guru", Auth::user()->id_guru)->get();
+        $detailKelas = DetailKelas::where("id_kelas", $kelas[0]->id)->get();
+        $subset = $detailKelas->map(function ($detailKelas) {
+            return $detailKelas->id_siswa;
+        });
+
+        if ($user->level == 1) {
+            $siswa = Siswa::with("detailTagihanSPP")->get();
+        }
+
+        if ($user->level == 2) {
+            $siswa = Siswa::with("detailTagihanSPP")->whereIn("id", $subset)->get();
+        }
+
+        if ($user->level == 3) {
+            $siswa = Siswa::with("detailTagihanSPP")->get();
+        }
+        
         $guru = Guru::where("id", $user->id_guru)->get();
         $siswaByID = Siswa::with("detail_kelass")->where("id", $user->id_siswa)->get();
         $jumlahTunggakan = DetailTagihanSPP::where("status_pembayaran", 0)->count();
