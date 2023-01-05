@@ -50,6 +50,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::resource('beranda', Beranda::class);
         Route::resource('kontak-guru', KontakGuruController::class);
         Route::resource('user', UserController::class);
+        Route::put('/user/change-password', [UserController::class, 'changePassword']);
+        Route::post('/change-password', [App\Http\Controllers\UserController::class, 'changePassword'])->name('change-password');
         Route::resource('siswa', SiswaController::class);
         Route::resource('guru', GuruController::class);
         Route::resource('wali-murid', WaliMuridController::class);

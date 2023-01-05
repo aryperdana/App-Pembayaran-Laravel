@@ -101,6 +101,51 @@
     </div>
 </div>
 @endif
+
+@if ($user->level == 3  )
+<div class="card">
+    <div class="card-body">
+        <h3>Selamat Datang!</h3>
+    </div>
+</div>
+<div class="d-flex">
+    <div class="card" style="width: 40rem">
+        <div class="card-body">
+            <div class="d-flex">
+                <i class="nav-icon fas fa-user" style="font-size: 50px"></i>
+                <div class="ml-4">
+                    <div class="d-flex">
+                        <div style="width: 60px"><b>Nama</b></div>
+                        <div class="mx-3"><b>:</b></div>
+                        <div><b>{{ $siswa_by_id[0]->nama_siswa }}</b></div>
+                    </div>
+                    <div class="d-flex">
+                        <div style="width: 60px"><b>Kelas</b></div>
+                        <div class="mx-3"><b>:</b></div>
+                        <div><b>{{ $siswa_by_id[0]->detail_kelass->kelas->kode_kelas }}</b></div>
+                    </div>
+                    <div class="d-flex">
+                        <div style="width: 60px"><b>NIP</b></div>
+                        <div class="mx-3"><b>:</b></div>
+                        <div><b>{{ $siswa_by_id[0]->nis }}</b></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card ml-3" style="width: 40rem">
+        <div class="card-body">
+            <div class="d-flex">
+                <i class="nav-icon fas fa-file" style="font-size: 50px"></i>
+                <div class="ml-4">
+                    <div><b>Jumlah Tunggakan</b></div>
+                    <div>{{ $jumlah_tunggakan_siswa }} Tunggakan</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
     
     <script>
         const ctx = document.getElementById('myChart');

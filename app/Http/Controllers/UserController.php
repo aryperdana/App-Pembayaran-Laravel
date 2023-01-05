@@ -46,6 +46,22 @@ class UserController extends Controller
         ]);
     }
 
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'password' => 'required|confirmed',
+        ],
+        [
+            'password.confirmed' => 'Password Yang Dimasukan Tidak Sama!',
+        ]);
+
+        User::whereId(auth()->user()->id)->update([
+            'password' => Hash::make($request->password)
+        ]);
+
+        return back()->with("status", "Password berhasil diubah!");
+    }
+
     public function store(Request $request)
     {
 

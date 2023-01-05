@@ -57,8 +57,6 @@ class WaliMuridController extends Controller
             'id_siswa' => 'required',
         ]);
 
-
-
         $wali_murid = new WaliMurid;
         $wali_murid->id_siswa = $request->id_siswa;
         $wali_murid->no_telp = $request->no_telp;

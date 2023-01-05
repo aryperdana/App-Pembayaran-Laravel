@@ -6,7 +6,11 @@
 
 @section('isi')
 <div class="d-flex justify-content-between mb-3">
+    @if ($user->level == "1")
     <a href="{{ route('user.create') }}" class="btn btn-primary px-4">Tambah</a>
+    @else
+    <div></div>
+    @endif
     <form action="" method="GET" class="input-group input-group col-4">
         <input type="text" name="key" class="form-control float-right"  placeholder="Cari...">
         <div class="input-group-append">
@@ -16,6 +20,12 @@
         </div>
     </form>
 </div>
+@error('password')
+{{-- <span class="text-danger"></span> --}}
+<div class="alert alert-danger" role="alert">
+    {{ $message }}
+</div>
+@enderror
 <div class="card">
     <div class="card-body table-responsive">
         <table class="table table-bordered table-hover text-nowrap">
@@ -68,14 +78,24 @@
           </button>
         </div>
         <div class="modal-body" id="content-modal">
+        <form action="{{ route('change-password') }}" method="POST">
+            @csrf
             <div class="form-group">
-                {{-- <label for="password">Password</label> --}}
+                <label for="password">Password</label>
                 <input type="password" class="form-control" name="password" id="password" placeholder="Masukan Password">
+               
             </div>
-        <div class="modal-footer">
-          <button id="simpan-tunai" class="btn btn-primary">Simpan</button>
-          {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-        </div>
+            
+            <div class="form-group">
+                <label for="confirm_password">Konfirmasi Password</label>
+                <input type="password" class="form-control" name="confirm_password" id="confirm_password" placeholder="Konfirmasi Password">
+            </div>
+        
+            <div class="modal-footer">
+            <button id="simpan-tunai" class="btn btn-primary">Simpan</button>
+            {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
+            </div>
+        </form>
       </div>
     </div>
   </div>

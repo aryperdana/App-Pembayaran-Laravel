@@ -163,12 +163,10 @@
       </a>
     </li>
     <li class="nav-item">
-        <a href="{{ url('guru') }}" class="nav-link">
-            <i class="nav-icon fas fa-user"></i>
-            <p>
-                Guru
-            </p>
-        </a>
+      <a href="{{ url('siswa') }}" class="nav-link">
+        <i class="nav-icon fas fa-user"></i>
+        <p>Siswa</p>
+      </a>
     </li>
     <li class="nav-item">
         <a href="{{ url('laporan-tunggakan') }}" class="nav-link">

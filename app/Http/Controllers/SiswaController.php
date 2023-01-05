@@ -5,17 +5,30 @@ namespace App\Http\Controllers;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\DetailKelas;
+use App\Models\Kelas;
 
 class SiswaController extends Controller
 {
     public function index(Request $request)
     {
         $key = $request->key;
-        $siswa = Siswa
+        if (Auth::user()->level == 2) {
+            $kelas = Kelas::where("id_guru", Auth::user()->id_guru)->get();
+            $detailKelas = DetailKelas::where("id_kelas", $kelas[0]->id)->get();
+            $subset = $detailKelas->map(function ($detailKelas) {
+                return $detailKelas->id_siswa;
+            });
+            $siswa = Siswa::whereIn('id', $subset)->paginate(10);
+        } else {
+            $siswa = Siswa
             ::where('nama_siswa', 'LIKE', '%' . $key . '%')
             ->orWhere('no_telp', 'LIKE', '%' . $key . '%')
             ->orWhere('email', 'LIKE', '%' . $key . '%')
             ->paginate(10);
+        }
+        
+        
         return view('pages.siswa.siswa')->with([
             'user' => Auth::user(),
             'data' => $siswa,

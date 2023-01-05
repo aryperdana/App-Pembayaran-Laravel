@@ -23,7 +23,7 @@ class Siswa extends Model
 
     public function detail_kelass()
     {
-        return $this->hasOne(DetailKelas::class);
+        return $this->hasOne(DetailKelas::class, "id_siswa");
     }
 
 }
