@@ -16,17 +16,18 @@ class LayoutController extends Controller
     {
         $user = Auth::user();
 
-        $kelas = Kelas::where("id_guru", Auth::user()->id_guru)->get();
-        $detailKelas = DetailKelas::where("id_kelas", $kelas[0]->id)->get();
-        $subset = $detailKelas->map(function ($detailKelas) {
-            return $detailKelas->id_siswa;
-        });
+        
 
         if ($user->level == 1) {
             $siswa = Siswa::with("detailTagihanSPP")->get();
         }
 
         if ($user->level == 2) {
+            $kelas = Kelas::where("id_guru", Auth::user()->id_guru)->get();
+            $detailKelas = DetailKelas::where("id_kelas", $kelas[0]->id)->get();
+            $subset = $detailKelas->map(function ($detailKelas) {
+                return $detailKelas->id_siswa;
+            });
             $siswa = Siswa::with("detailTagihanSPP")->whereIn("id", $subset)->get();
         }
 
