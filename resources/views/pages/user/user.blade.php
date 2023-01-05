@@ -20,12 +20,6 @@
         </div>
     </form>
 </div>
-@error('password')
-{{-- <span class="text-danger"></span> --}}
-<div class="alert alert-danger" role="alert">
-    {{ $message }}
-</div>
-@enderror
 <div class="card">
     <div class="card-body table-responsive">
         <table class="table table-bordered table-hover text-nowrap">
@@ -51,7 +45,7 @@
                                 @if ($user->level == "1")
                                 <button class="btn btn-outline-danger"><i class="fas fa-trash"></i></button>
                                 @endif
-                                <button type="button" data-toggle="modal" id="pay-tunai-button" class="btn btn-outline-secondary" data-target="#modal-tunai">Ubah Password</button>
+                                <button type="button" data-toggle="modal" id="changePassword" name="changePassword" value="{{ $hasil->id }}" class="btn btn-outline-secondary" data-target="#change_pass">Ubah Password</button>
                               </div>
                         </form>
                     </td>
@@ -68,7 +62,7 @@
     {{ $data->withQueryString()->links('pagination::bootstrap-4') }}
 </div>
 
-<div class="modal" id="modal-tunai" tabindex="-1" role="dialog">
+<div class="modal" id="change_pass" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-md" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -78,36 +72,55 @@
           </button>
         </div>
         <div class="modal-body" id="content-modal">
-        <form action="{{ route('change-password') }}" method="POST">
-            @csrf
+        {{-- <form action="{{ route('change-password') }}" method="POST">
+            @csrf --}}
+            <div id="succesPass">
+            </div>
             <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" class="form-control" name="password" id="password" placeholder="Masukan Password">
-               
+                <span class="text-danger" id="errorMsg"></span>
             </div>
             
             <div class="form-group">
                 <label for="confirm_password">Konfirmasi Password</label>
-                <input type="password" class="form-control" name="confirm_password" id="confirm_password" placeholder="Konfirmasi Password">
+                <input type="password" class="form-control" name="password_confirmation" id="password_confirmation" placeholder="Konfirmasi Password">
             </div>
         
             <div class="modal-footer">
-            <button id="simpan-tunai" class="btn btn-primary">Simpan</button>
+            <button id="simpan" class="btn btn-primary">Simpan</button>
             {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
             </div>
-        </form>
+        {{-- </form> --}}
       </div>
     </div>
   </div>
+<script type="text/javascript">
+    let id = []
+    $("#changePassword").click(function (e) { 
+        e.preventDefault();
+        id.push(e.target.value);
+    });
 
-
-    
-    {{-- <ul class="pagination pagination m-0">
-        <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
-    </ul> --}}
-{{-- </div> --}}
+    $(document).on('click', "#simpan", function () {
+        let password = $("#password").val();
+        let password_confirmation = $("#password_confirmation").val();
+            $.ajax({
+                type: "post",
+                url: "{{ route('change-password') }}",
+                data: {
+                    id : id,
+                    password: password,
+                    password_confirmation: password_confirmation,
+                    "_token" : "{{ csrf_token() }}"
+                },
+                success: function (res) {
+                    $("#succesPass").html('<div class="alert alert-success" role="alert">Password Berhasil Diubah!</div>');
+                },
+                error: function (err) {
+                    $("#errorMsg").append(err?.responseJSON?.message);
+                }
+            });
+        });
+</script>
 @endsection

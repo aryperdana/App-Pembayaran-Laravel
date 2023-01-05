@@ -13,7 +13,6 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-
         $key = $request->key;
         $auth = Auth::user();
         if ($auth->level == '1') {
@@ -48,6 +47,8 @@ class UserController extends Controller
 
     public function changePassword(Request $request)
     {
+
+  
         $request->validate([
             'password' => 'required|confirmed',
         ],
