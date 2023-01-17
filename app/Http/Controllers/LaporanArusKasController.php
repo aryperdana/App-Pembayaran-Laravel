@@ -17,7 +17,12 @@ class LaporanArusKasController extends Controller
     {
         $month = $request->get('month');
         $year = $request->get('year');
-        $bulan = Carbon::parse("01-${month}-${year}")->locale('id')->translatedFormat('F Y');
+        if ($year && $month) {
+            $bulan = Carbon::parse("01-${month}-${year}")->locale('id')->translatedFormat('F Y');
+        } else {
+            $bulan = Carbon::now()->locale('id')->translatedFormat('F Y');
+        }
+        
 
         $laporan = DetailTagihanSPP::whereYear('created_at', '=', $year) ->whereMonth('created_at', '=', $month)->where("status_pembayaran", 1)->get();
         return view('pages.laporan_arus_kas.laporan_arus_kas')->with([
