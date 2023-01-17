@@ -31,23 +31,37 @@
     </form>
     </div> --}}
 <div class="d-flex justify-content-end">
-    <div class="form-group">
-        <select class="form-control" id="bulan" name="bulan" style="width: 300px">
-            <option value="none">Pilih Bulan</option>
-            <option value="1">Januari</option>
-            <option value="2">Februari</option>
-            <option value="3">Maret</option>
-            <option value="4">April</option>
-            <option value="5">Mei</option>
-            <option value="6">Juni</option>
-            <option value="7">Juli</option>
-            <option value="8">Agustus</option>
-            <option value="9">September</option>
-            <option value="10">Oktober</option>
-            <option value="11">November</option>
-            <option value="12">Desember</option>
-        </select>
-    </div>
+    <form method="GET">
+        <div class="d-flex">
+            <div class="form-group">
+                <select class="form-control" id="month" name="month" style="width: 300px">
+                    <option value="none">Pilih Bulan</option>
+                    <option value="01">Januari</option>
+                    <option value="02">Februari</option>
+                    <option value="03">Maret</option>
+                    <option value="04">April</option>
+                    <option value="05">Mei</option>
+                    <option value="06">Juni</option>
+                    <option value="07">Juli</option>
+                    <option value="08">Agustus</option>
+                    <option value="09">September</option>
+                    <option value="10">Oktober</option>
+                    <option value="11">November</option>
+                    <option value="12">Desember</option>
+                </select>
+            </div>
+            <select style="cursor:pointer;" class="form-control ml-2" id="tag_select" name="year" >
+                <option value="0" selected disabled> Pilih Tahun</option>
+                    <?php 
+                    $year = date('Y');
+                    $min = $year - 60;
+                    $max = $year;
+                    for( $i = $max; $i >= $min; $i-- ) {
+                    echo '<option value='.$i.'>'.$i.'</option>';
+                    } ?> </select>
+        <button class="btn btn-primary ml-2" style="height: 37px">Cari</button>
+        </div>
+    </form>
 </div>
 <div class="card">
     <div class="card-body">

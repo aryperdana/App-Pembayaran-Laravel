@@ -88,6 +88,7 @@ class SiswaController extends Controller
         ]);
 
         $siswa = Siswa::find($id);
+        $siswa->nis = $request->nis;
         $siswa->no_telp = $request->no_telp;
         $siswa->nama_siswa = $request->nama_siswa;
         $siswa->email = $request->email;

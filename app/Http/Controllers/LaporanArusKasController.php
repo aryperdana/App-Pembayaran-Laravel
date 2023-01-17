@@ -13,14 +13,13 @@ class LaporanArusKasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        
-        $start_date = Carbon::now()->startOfMonth()->toDateString();
-        $end_date = Carbon::now()->endOfMonth()->toDateString();
-        $bulan = Carbon::now()->locale('id')->translatedFormat('F Y');
-        // dd($bulan);
-        $laporan = DetailTagihanSPP::whereBetween('created_at',[$start_date,$end_date])->where("status_pembayaran", 1)->get();
+        $month = $request->get('month');
+        $year = $request->get('year');
+        $bulan = Carbon::parse("01-${month}-${year}")->locale('id')->translatedFormat('F Y');
+
+        $laporan = DetailTagihanSPP::whereYear('created_at', '=', $year) ->whereMonth('created_at', '=', $month)->where("status_pembayaran", 1)->get();
         return view('pages.laporan_arus_kas.laporan_arus_kas')->with([
             'user' => Auth::user(),
             'data' => $laporan,
