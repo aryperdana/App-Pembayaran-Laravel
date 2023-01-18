@@ -34,7 +34,9 @@ class LaporanTunggakanController extends Controller
                     
                 })->get();
             } else {
-                $data = DetailTagihanSPP::all();
+                $data = DetailTagihanSPP::whereBetween('created_at',[$start_date,$end_date])->whereHas('siswa', function($query) use($key) {
+                    $query->where('nama_siswa', 'LIKE', '%'. $key .'%');  
+                })->get();
             }
         }
 
@@ -72,20 +74,31 @@ class LaporanTunggakanController extends Controller
 
     public function exportTunggakan($start_date, $end_date)
     {
-        $kelas = Kelas::where("id_guru", Auth::user()->id_guru)->get();
-        $detailKelas = DetailKelas::where("id_kelas", $kelas[0]->id)->get();
-        $subset = $detailKelas->map(function ($detailKelas) {
-            return $detailKelas->id_siswa;
-        });
-
-        if ($start_date || $end_date) {
-            $start_date = Carbon::parse($start_date)->toDateTimeString();
-            $end_date = Carbon::parse($end_date)->toDateTimeString();
-            $data = DetailTagihanSPP::whereIn('id_siswa', $subset)->whereBetween('created_at',[$start_date,$end_date])->get();
-        } else {
-            $data = DetailTagihanSPP::whereIn('id_siswa', $subset)->whereBetween('created_at',[$start_date,$end_date])->latest()->get();
+        if (Auth::user()->level == 1) {
+            if ($start_date || $end_date) {
+                $start_date = Carbon::parse($start_date)->toDateTimeString();
+                $end_date = Carbon::parse($end_date)->toDateTimeString();
+                $data = DetailTagihanSPP::whereBetween('created_at',[$start_date,$end_date])->get();
+            } else {
+                $data = DetailTagihanSPP::all();
+            }
         }
 
+        if (Auth::user()->level == 2) {
+            $kelas = Kelas::where("id_guru", Auth::user()->id_guru)->get();
+            $detailKelas = DetailKelas::where("id_kelas", $kelas[0]->id)->get();
+            $subset = $detailKelas->map(function ($detailKelas) {
+                return $detailKelas->id_siswa;
+            });
+
+            if ($start_date || $end_date) {
+                $start_date = Carbon::parse($start_date)->toDateTimeString();
+                $end_date = Carbon::parse($end_date)->toDateTimeString();
+                $data = DetailTagihanSPP::whereIn('id_siswa', $subset)->whereBetween('created_at',[$start_date,$end_date])->get();
+            } else {
+                $data = DetailTagihanSPP::all();
+            }
+        }
         return Excel::download(new TunggakanExport($data), 'tunggakan.xlsx');
     }
 

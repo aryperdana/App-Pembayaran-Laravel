@@ -318,8 +318,10 @@
         lainnya: val.lainnya,
         tenggat: val.tenggat,
       }))
+
+      console.log(findDaveData);
       
-      const mapDeleteData = findDaveData.map((val) => val.id_tagihan_spp)
+      const mapDeleteData = findDaveData.map((val) => val.id)
 
 
       $.ajax({
@@ -343,6 +345,7 @@
                     /* You may add your own implementation here */
                     alert("payment success!"); console.log(result?.va_numbers[0].bank);
                     const detailSave = mapSaveData.map(val => ({...val, bank_transfer:result?.va_numbers[0].bank})) 
+                    console.log("delete", mapDeleteData);
                     $.ajax({
                         type: "post",
                         url:"{{ route('pembayaran.store') }}",  
