@@ -6,7 +6,16 @@
 
 @section('isi')
 <div class="d-flex justify-content-between mb-3">
+    <form action="" method="GET" class="input-group input-group col-4">
+        <input type="text" name="key" class="form-control float-right"  placeholder="Cari...">
+        <div class="input-group-append">
+            <button class="btn btn-default">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </form>
 </div>
+
 <div class="card">
     <div class="card-body table-responsive">
         <table class="table table-bordered table-hover text-nowrap">
@@ -19,8 +28,10 @@
                 <th scope="col" class="text-center">Bulan</th>
                 <th scope="col" class="text-center">Semester</th>
                 <th scope="col" class="text-center">Nama Siswa</th>
+                <th scope="col" class="text-center">NIS</th>
                 <th scope="col" class="text-center">Jenis Tagihan</th>
                 <th scope="col" class="text-center">Harga</th>
+                <th scope="col" class="text-center">Bayar</th>
                 <th scope="col" class="text-center">Aksi</th>
                 </tr>
             </thead>
@@ -71,8 +82,16 @@
                     </td>
                     <td>{{ $hasil->tagihanSpp->semester }}</td>
                     <td>{{ $hasil->siswa->nama_siswa }}</td>
+                    <td>{{ $hasil->siswa->nis }}</td>
                     <td>{{ $hasil->jenisTagihan->nama_jenis_tagihan }}</td>
                     <td>Rp. {{ number_format($hasil->harga,0, ',' , '.') }}</td>
+                    <td class="text-center" style="width: 150px">
+                        <input type="text" class="form-control" name="bayar" id={{ $hasil->id }} @if ($hasil->bayar)
+                            value={{ $hasil->bayar }}
+                        @else
+                            value="0"
+                        @endif >
+                    </td>
                     <td class="text-center">
                         <input type="checkbox" class="check_box" value={{ $hasil->id }}>
                     </td>
@@ -96,7 +115,7 @@
 
 {{-- Modal --}}
 <div class="modal" id="modal-tunai" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-xl" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Pembayaran Tunai</h5>
@@ -118,6 +137,7 @@
                     <th scope="col" class="text-center">Nama Siswa</th>
                     <th scope="col" class="text-center">Jenis Tagihan</th>
                     <th scope="col" class="text-center">Harga</th>
+                    <th scope="col" class="text-center">Bayar</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -200,6 +220,8 @@
 
     $('#pay-tunai-button').click(function (e) { 
         console.log("idSelected", idSelected);
+ 
+        
         const mapDataSelected = idSelected.map((val) => {
             const dataSelected = dataSiswa.find((res) => parseInt(res.id) === parseInt(val))
             return {
@@ -220,11 +242,12 @@
                 nama_siswa : dataSelected?.siswa?.nama_siswa,
                 nama_jenis_tagihan: dataSelected?.jenis_tagihan?.nama_jenis_tagihan,
                 harga : dataSelected.harga,
+                bayar : $("#" + val).val()
             }
         })
 
 
-        console.log(mapDataSelected);
+        console.log("mapDataSelected", mapDataSelected);
         var newtr = '';
         
         for (i = 0; i < mapDataSelected.length; i++) {
@@ -238,6 +261,7 @@
                 newtr += '<td>'+ mapDataSelected[i].nama_siswa + '</td>';
                 newtr += '<td>'+ mapDataSelected[i].nama_jenis_tagihan + '</td>';
                 newtr += '<td>'+ mapDataSelected[i].harga + '</td>';
+                newtr += '<td>'+ mapDataSelected[i].bayar + '</td>';
             newtr += '</tr>';
             }
             $('#modal-table tbody').html(newtr);
@@ -251,31 +275,35 @@
                 success: function (res) {
                     console.log(val, res);
                     const data = res.tagihan.find((item) => parseInt(item.id) === parseInt(val))
-                    // const end = arr.length - 1;
-                    arr.splice(0, 0, data)
+                    const dataObj = {...data,  bayar : $("#" + val).val()}
+                    arr.splice(0, 0, dataObj)
                 },
                 error: function (err) {
                     console.log("err",err);
                 }
             });
         })
-       
-        
     });
 
 
     $('#simpan-tunai').click(function (e) { 
-        const findDaveData = arr.map((val) =>  dataSiswa.find((item) => item.id === val.id))
+        console.log("arr", arr);
+        const findDaveData = arr.map((val) =>  {
+          const data = dataSiswa.find((item) => item.id === val.id)
+          return {...data, bayar: val.bayar}
+        })
+        console.log("findDaveData", findDaveData);
         const mapSaveData = findDaveData.map((val) => ({
             id_tagihan_spp : val.id_tagihan_spp,
             id_siswa : val.id_siswa,
             id_jenis_tagihan : val.id_jenis_tagihan,
             harga : val.harga,
-            status_pembayaran : 1,
+            status_pembayaran : parseInt(val.bayar) < parseInt(val.harga) ? 0 : 1,
             tunai : 1,
             lainnya: val.lainnya,
             tenggat: val.tenggat,
             bank_transfer: null,
+            bayar: val.bayar
         }))
         const mapDeleteData = findDaveData.map((val) => val.id)
 
@@ -307,7 +335,7 @@
     payButton.addEventListener('click', function () {
       // Trigger snap popup. @TODO: Replace TRANSACTION_TOKEN_HERE with your transaction token
 
-      const findDaveData = arr.map((val) => val.id_jenis_tagihan ? dataSiswa.find((item) => item.jenis_tagihan.id === val.id_jenis_tagihan) : "")
+      const findDaveData = arr.map((val) => val.id_jenis_tagihan ? dataSiswa.find((item) => item.id === val.id) : "")
       const mapSaveData = findDaveData.map((val) => ({
         id_tagihan_spp : val.id_tagihan_spp,
         id_siswa : val.id_siswa,
@@ -343,9 +371,10 @@
                 window.snap.pay(res, {
                     onSuccess: function(result){
                     /* You may add your own implementation here */
-                    alert("payment success!"); console.log(result?.va_numbers[0].bank);
+                    alert("payment success!"); 
+                    console.log(result?.va_numbers[0].bank);
                     const detailSave = mapSaveData.map(val => ({...val, bank_transfer:result?.va_numbers[0].bank})) 
-                    console.log("delete", mapDeleteData);
+                    console.log("save", detailSave);
                     $.ajax({
                         type: "post",
                         url:"{{ route('pembayaran.store') }}",  

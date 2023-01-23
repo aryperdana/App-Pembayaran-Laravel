@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_siswa');
             $table->unsignedBigInteger('id_jenis_tagihan');
             $table->string('harga');
+            $table->string('bayar')->nullable();
             $table->boolean('status_pembayaran');
             $table->boolean('tunai');
             $table->boolean('lainnya');

@@ -16,14 +16,18 @@ class PembayaranController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $id_siswa = Auth::user()->id_siswa;
+        $key = $request->key;
         $tagihan = array();
         if ($id_siswa != "0") {
             $tagihan = DetailTagihanSPP::where("id_siswa", $id_siswa)->where('status_pembayaran', 0)->get();
         } else {
-            $tagihan = DetailTagihanSPP::where('status_pembayaran', 0)->get();
+            $tagihan = DetailTagihanSPP::whereHas('siswa', function($query) use($key) {
+                $query->where('nama_siswa', 'LIKE', '%'. $key .'%')->orWhere('nis', 'LIKE', '%'. $key .'%');
+            })->where('status_pembayaran', 0)->get();
+            // dd($tagihan);
         }
         
         // return $snapToken;
@@ -57,6 +61,7 @@ class PembayaranController extends Controller
 
         $iten_details = $request->detail;
         $item_delete = $request->delete;
+        // dd($iten_details);
         DetailTagihanSPP::whereIn('id', $item_delete)->delete();
 
          foreach ($iten_details as $key => $value) {
@@ -70,6 +75,7 @@ class PembayaranController extends Controller
                 'lainnya' => $value['lainnya'],
                 'bank_transfer' => $value['bank_transfer'],
                 'tenggat' => $value['tenggat'],
+                'bayar' => $value['bayar'],
             );
 
             $detail_tagihan = DetailTagihanSPP::create($detail_tagihan);

@@ -48,6 +48,8 @@
                 <th scope="col" class="text-center">Nama Siswa</th>
                 <th scope="col" class="text-center">Jenis Tagihan</th>
                 <th scope="col" class="text-center">Harga</th>
+                <th scope="col" class="text-center">Bayar</th>
+                <th scope="col" class="text-center">Sisa</th>
                 <th scope="col" class="text-center">Tenggat</th>
                 <th scope="col" class="text-center">Status Pembayaran</th>
                 </tr>
@@ -101,6 +103,8 @@
                     <td>{{ $hasil->siswa->nama_siswa }}</td>
                     <td>{{ $hasil->jenisTagihan->nama_jenis_tagihan }}</td>
                     <td>Rp. {{ number_format($hasil->harga,0, ',' , '.') }}</td>
+                    <td>Rp. {{ number_format($hasil->bayar,0, ',' , '.') }}</td>
+                    <td>Rp. {{ number_format($hasil->harga - $hasil->bayar,0, ',' , '.') }}</td>
                     <td>{{ $hasil->tenggat }}</td>
                     <td class="text-center" style="width: 100px">
                         @if ($hasil->status_pembayaran === 1)
