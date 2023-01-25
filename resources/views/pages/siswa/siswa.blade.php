@@ -32,6 +32,7 @@
                 <th scope="col" class="text-center">Nama</th>
                 <th scope="col" class="text-center">No. Telp</th>
                 <th scope="col" class="text-center">Email</th>
+                <th scope="col" class="text-center">Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -53,6 +54,7 @@
                     <td>{{ $hasil->nama_siswa }}</td>
                     <td>{{ $hasil->no_telp }}</td>
                     <td>{{ $hasil->email }}</td>
+                    <td>{{ $hasil->status_siswa == 0 ? "Aktif" : "Tidak Aktif" }}</td>
                 </tr>
                 @endforeach
             </tbody>

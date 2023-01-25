@@ -1,10 +1,17 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\LaporanTunggakan;
 use App\Models\DetailTagihanSPP;
-use Illuminate\Support\Facades\Auth;
+use App\Models\JenisTagihan;
+use App\Models\Kelas;
+use App\Models\DetailKelas;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\TunggakanExport;
 
 class LaporanArusKasController extends Controller
 {
@@ -15,21 +22,88 @@ class LaporanArusKasController extends Controller
      */
     public function index(Request $request)
     {
-        $month = $request->get('month');
-        $year = $request->get('year');
-        if ($year && $month) {
-            $bulan = Carbon::parse("01-${month}-${year}")->locale('id')->translatedFormat('F Y');
-        } else {
-            $bulan = Carbon::now()->locale('id')->translatedFormat('F Y');
+        // dd($request);
+        $key = $request->key;
+        $q = $request->id_jenis_tagihan;
+        $start_date = Carbon::now()->toDateString();
+        $end_date = Carbon::now()->endOfMonth()->toDateString();
+        $jenis_tagihan = JenisTagihan::get();
+        if (Auth::user()->level == 1) {
+            if ($request->start_date || $request->end_date) {
+                $start_date = Carbon::parse($request->start_date)->toDateTimeString();
+                $end_date = Carbon::parse($request->end_date)->toDateTimeString();
+                $data = DetailTagihanSPP::whereBetween('created_at',[$start_date,$end_date])->whereHas('siswa', function($query) use($key) {
+                    $query->where('nama_siswa', 'LIKE', '%'. $key .'%');
+                })->get();
+            } else {
+                $data = DetailTagihanSPP::whereBetween('created_at',[$start_date,$end_date])->whereHas('siswa', function($query) use($key) {
+                    $query->where('nama_siswa', 'LIKE', '%'. $key .'%');  
+                })->whereHas('jenisTagihan', function($query) use($q) {$query->where('id_jenis_tagihan', 'LIKE', '%'. $q .'%');})->get();
+                // dd($data);
+            }
+        }
+
+        if (Auth::user()->level == 2) {
+           if ($request->start_date || $request->end_date) {
+                $kelas = Kelas::where("id_guru", Auth::user()->id_guru)->get();
+                $detailKelas = DetailKelas::where("id_kelas", $kelas[0]->id)->get();
+                $subset = $detailKelas->map(function ($detailKelas) {
+                    return $detailKelas->id_siswa;
+                });
+                $start_date = Carbon::parse($request->start_date)->toDateTimeString();
+                $end_date = Carbon::parse($request->end_date)->toDateTimeString();
+                $data = DetailTagihanSPP::whereIn('id_siswa', $subset)->whereBetween('created_at',[$start_date,$end_date])->whereHas('siswa', function($query) use($key) {
+                    $query->where('nama_siswa', 'LIKE', '%'. $key .'%');
+                    
+                })->get();
+            } else {
+                $kelas = Kelas::where("id_guru", Auth::user()->id_guru)->get();
+                $detailKelas = DetailKelas::where("id_kelas", $kelas[0]->id)->get();
+                $subset = $detailKelas->map(function ($detailKelas) {
+                    return $detailKelas->id_siswa;
+                });
+                $data = DetailTagihanSPP::whereIn('id_siswa', $subset)->get();
+            }
         }
         
-
-        $laporan = DetailTagihanSPP::whereYear('created_at', '=', $year) ->whereMonth('created_at', '=', $month)->where("status_pembayaran", 1)->get();
         return view('pages.laporan_arus_kas.laporan_arus_kas')->with([
             'user' => Auth::user(),
-            'data' => $laporan,
-            'bulan' => $bulan,
+            'data' => $data,
+            'start_date' => Carbon::parse($start_date)->format('Y-m-d'),
+            'end_date' => Carbon::parse($end_date)->format('Y-m-d'),
+            'key' => $key,
+            'jenis_tagihan' => $jenis_tagihan
         ]);
+    }
+
+    public function exportTunggakan($start_date, $end_date)
+    {
+        if (Auth::user()->level == 1) {
+            if ($start_date || $end_date) {
+                $start_date = Carbon::parse($start_date)->toDateTimeString();
+                $end_date = Carbon::parse($end_date)->toDateTimeString();
+                $data = DetailTagihanSPP::whereBetween('created_at',[$start_date,$end_date])->get();
+            } else {
+                $data = DetailTagihanSPP::all();
+            }
+        }
+
+        if (Auth::user()->level == 2) {
+            $kelas = Kelas::where("id_guru", Auth::user()->id_guru)->get();
+            $detailKelas = DetailKelas::where("id_kelas", $kelas[0]->id)->get();
+            $subset = $detailKelas->map(function ($detailKelas) {
+                return $detailKelas->id_siswa;
+            });
+
+            if ($start_date || $end_date) {
+                $start_date = Carbon::parse($start_date)->toDateTimeString();
+                $end_date = Carbon::parse($end_date)->toDateTimeString();
+                $data = DetailTagihanSPP::whereIn('id_siswa', $subset)->whereBetween('created_at',[$start_date,$end_date])->get();
+            } else {
+                $data = DetailTagihanSPP::all();
+            }
+        }
+        return Excel::download(new TunggakanExport($data), 'tunggakan.xlsx');
     }
 
     /**
@@ -56,10 +130,10 @@ class LaporanArusKasController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\LaporanTunggakan  $laporanTunggakan
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(LaporanTunggakan $laporanTunggakan)
     {
         //
     }
@@ -67,10 +141,10 @@ class LaporanArusKasController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\LaporanTunggakan  $laporanTunggakan
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(LaporanTunggakan $laporanTunggakan)
     {
         //
     }
@@ -79,10 +153,10 @@ class LaporanArusKasController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\LaporanTunggakan  $laporanTunggakan
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, LaporanTunggakan $laporanTunggakan)
     {
         //
     }
@@ -90,10 +164,10 @@ class LaporanArusKasController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\LaporanTunggakan  $laporanTunggakan
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(LaporanTunggakan $laporanTunggakan)
     {
         //
     }

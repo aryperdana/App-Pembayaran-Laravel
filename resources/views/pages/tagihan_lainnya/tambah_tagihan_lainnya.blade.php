@@ -117,8 +117,8 @@
 
             let id_kelas = $("#id_kelas").val()
             const siswa = <?php echo json_encode($siswa); ?>;
-            const mapSiswa = siswa.filter(val => parseInt(val.id_kelas) === parseInt(id_kelas));
-            console.log(mapSiswa);
+            const mapSiswa = siswa.filter(val => parseInt(val.id_kelas) === parseInt(id_kelas) && parseInt(val?.siswa?.status_siswa) === 0);
+
 
             $.each(mapSiswa, function(key, value) {   
                 $('#id_siswa')

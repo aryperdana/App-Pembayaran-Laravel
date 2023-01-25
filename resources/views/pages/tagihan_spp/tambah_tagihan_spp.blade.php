@@ -134,7 +134,7 @@
                         response.data.map((val) => {
                             const obj = {
                                 id_siswa: val.id_siswa,
-                                nama_siswa: response.siswa.find((res) => val.id_siswa === res.id).nama_siswa
+                                nama_siswa: response.siswa.filter((res) => res.status_siswa === 0).find((res) => val.id_siswa === res.id).nama_siswa
                             }
                             
                             dataList.push(obj)

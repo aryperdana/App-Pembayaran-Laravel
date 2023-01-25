@@ -67,7 +67,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/pembayaran/get-tagihan/', [PembayaranController::class, 'tagihan']);
         Route::resource('tunggakan', TunggakanController::class);
         Route::resource('laporan-tunggakan', LaporanTunggakanController::class);
-        Route::resource('laporan-arus-kas', LaporanArusKasController::class);
+        Route::resource('laporan-pendapatan', LaporanArusKasController::class);
         Route::get('/export/{start_date}/{end_date}',[LaporanTunggakanController::class,'exportTunggakan'])->name('export');
         // Route::get('/laporan-tunggakan/export/', [LaporanTunggakanController::class, 'exportTunggakan']);
     });

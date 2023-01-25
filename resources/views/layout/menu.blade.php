@@ -144,9 +144,9 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ url('laporan-arus-kas') }}" class="nav-link">
+            <a href="{{ url('laporan-pendapatan') }}" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
-              <p>Laporan Arus Kas</p>
+              <p>Laporan Pendapatan</p>
             </a>
           </li>
         </ul>
