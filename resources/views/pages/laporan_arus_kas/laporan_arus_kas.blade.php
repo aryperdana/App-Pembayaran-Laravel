@@ -106,6 +106,10 @@
                     </td>
                 </tr>
                 @endforeach
+                <tr>
+                    <th colspan="11" class="text-right">Total Pendapatan</th>
+                    <th>{{ number_format($sum,0, ',' , '.') }}</th>
+                </tr>
             </tbody>
         </table>
     </div>  

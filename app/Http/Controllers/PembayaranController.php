@@ -80,7 +80,7 @@ class PembayaranController extends Controller
 
             $detail_tagihan = DetailTagihanSPP::create($detail_tagihan);
         }
-        return to_route('pembayaran.index')->with('success', 'Pembayaran Berhasil');
+        return redirect()->back();
 
     }
 

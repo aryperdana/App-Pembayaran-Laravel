@@ -61,12 +61,15 @@ class SiswaController extends Controller
             'email' => 'required|min:3',
         ]);
 
+        $isChecked = $request->has('status_siswa');
+
         $siswa = new Siswa;
         $siswa->nis = $request->nis;
         $siswa->no_telp = $request->no_telp;
         $siswa->nama_siswa = $request->nama_siswa;
         $siswa->email = $request->email;
         $siswa->status_siswa = 0;
+        $siswa->status_siswa = $isChecked ? 1 : 0;
         $siswa->save();
 
         return to_route('siswa.index')->with('success', 'Data Berhasil Di Tambah');

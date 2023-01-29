@@ -35,7 +35,7 @@
                 <label class="form-check-label" for="status_siswa">
                   Tidak Aktif
                 </label>
-              </div>
+            </div>
         </div>
 
         <div class="card-footer">

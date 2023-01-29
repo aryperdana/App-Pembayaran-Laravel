@@ -29,6 +29,12 @@
                 <label for="email">Email</label>
                 <input type="email" class="form-control" name="email" id="email" placeholder="Masukan Email">
             </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="status_siswa" name="status_siswa">
+                <label class="form-check-label" for="status_siswa">
+                  Tidak Aktif
+                </label>
+            </div>
         </div>
 
         <div class="card-footer">

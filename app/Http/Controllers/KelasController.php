@@ -39,7 +39,12 @@ class KelasController extends Controller
     public function create()
     {
         $guru = Guru::all();
-        $siswa = Siswa::all();
+        $detail_kelas = DetailKelas::all();
+        $subset = $detail_kelas->map(function ($detail_kelas) {
+            return $detail_kelas->id_siswa;
+        });
+        $siswa = Siswa::where('status_siswa', 0)->where('id', '!=', $subset)->get();
+     
         return view('pages.kelas.tambah_kelas')->with([
             'user' => Auth::user(),
             'guru' => $guru,

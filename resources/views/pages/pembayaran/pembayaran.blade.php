@@ -341,16 +341,16 @@
         id_siswa : val.id_siswa,
         id_jenis_tagihan : val.id_jenis_tagihan,
         harga : val.harga,
-        status_pembayaran : 1,
+        status_pembayaran : parseInt($("#" + val.id).val()) < parseInt(val.harga) ? 0 : 1,
         tunai : 0,
         lainnya: val.lainnya,
         tenggat: val.tenggat,
+        bayar : $("#" + val.id).val()
       }))
 
       console.log(findDaveData);
       
       const mapDeleteData = findDaveData.map((val) => val.id)
-
 
       $.ajax({
             type: "post",
@@ -361,7 +361,7 @@
                 "phone" : dataSiswa[0].siswa.no_telp,
                     detail : arr.map((val) => ({
                         "id" : val.id,
-                        "price" : val.harga,
+                        "price" : $("#" + val.id).val(),
                         "name" : val.id_jenis_tagihan ? dataSiswa.find((item) => item.jenis_tagihan.id === val.id_jenis_tagihan).jenis_tagihan.nama_jenis_tagihan : "",
                         "quantity" : 1,
                     })),
