@@ -45,11 +45,12 @@ class KelasController extends Controller
         });
         // dd(count($subset));
 
-        $siswa = array();
-        if (count($subset) < 0) {
+        $siswa = $siswa = Siswa::where('status_siswa', 0);
+
+        if (count($subset) > 0) {
             $siswa = $siswa->where('id', '!=', $subset)->get();
         } else {
-            $siswa = Siswa::where('status_siswa', 0)->get();
+            $siswa = $siswa->get(); 
         }
    
         return view('pages.kelas.tambah_kelas')->with([
