@@ -48,9 +48,9 @@ class KelasController extends Controller
         if (count($subset) != 0) {
             $siswa = $siswa->where('id', '!=', $subset)->get();
         } else {
-            $siswa = Siswa::where('status_siswa', 0);
+            $siswa = Siswa::where('status_siswa', 0)->get();
         }
-     
+   
         return view('pages.kelas.tambah_kelas')->with([
             'user' => Auth::user(),
             'guru' => $guru,
