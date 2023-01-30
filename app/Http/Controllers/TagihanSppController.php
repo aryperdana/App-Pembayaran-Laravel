@@ -39,13 +39,19 @@ class TagihanSppController extends Controller
             $id_siswa_arr[] = $value['id_siswa'];  
         }
 
-        $getSiswa = Siswa::query()->find($id_siswa_arr);
+        $siswa = Siswa::where('status_siswa', 0);
+
         
+        
+        $getSiswa =  $siswa->whereIn("id", $id_siswa_arr)->get();
+        // dd($getSiswa);
         return response([
             'message' => 'success',
             'data' => $detail_kelas,
             'siswa' => $getSiswa,
         ], 200);
+
+        
     }
 
     /**

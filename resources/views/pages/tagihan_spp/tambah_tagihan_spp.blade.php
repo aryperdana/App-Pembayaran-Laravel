@@ -131,20 +131,28 @@
                     success:function(response){
                         let dataList = [];
 
+                        $("#listSiswa tr").remove(); 
+                        // console.log("response", response.siswa);
+
                         response.data.map((val) => {
-                            const obj = {
-                                id_siswa: val.id_siswa,
-                                nama_siswa: response.siswa.filter((res) => res.status_siswa === 0).find((res) => val.id_siswa === res.id).nama_siswa
-                            }
-                            
+                            const nama_siswa = response.siswa.find((res) => val.id_siswa === res.id)?.nama_siswa
+                            if (nama_siswa) {
+                                const obj = {
+                                    id_siswa: val.id_siswa,
+                                    nama_siswa: nama_siswa,
+                                }
                             dataList.push(obj)
+                            }
+                           
+                           
+
+                            
                         })
 
                         dataListGlobal.push(...dataList)
                         dataSiswa.push(...response.siswa)
 
-                        console.log(dataList);
-
+                       
                         $.each(dataList, function (key, value) {
                      
 							$('#listSiswa').append("<tr>\

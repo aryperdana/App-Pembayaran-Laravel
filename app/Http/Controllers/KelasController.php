@@ -45,7 +45,7 @@ class KelasController extends Controller
         });
         // dd(count($subset));
 
-        $siswa = $siswa = Siswa::where('status_siswa', 0);
+        $siswa = Siswa::where('status_siswa', 0);
 
         if (count($subset) > 0) {
             $siswa = $siswa->where('id', '!=', $subset)->get();
