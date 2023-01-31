@@ -43,14 +43,18 @@ class KelasController extends Controller
         $subset = $detail_kelas->map(function ($detail_kelas) {
             return $detail_kelas->id_siswa;
         });
-        // dd(count($subset));
+        // dd($subset);
 
-        $siswa = Siswa::where('status_siswa', 0);
+        $siswa = array();
 
         if (count($subset) > 0) {
-            $siswa = $siswa->where('id', '!=', $subset)->get();
+            // dd(count($subset));
+            $subset->map(function ($sub) {
+                return $siswa = Siswa::where('id', '!=', $sub)->where('status_siswa', 0)->get();
+            });
+            
         } else {
-            $siswa = $siswa->get(); 
+            $siswa = Siswa::where('status_siswa', 0)->get(); 
         }
    
         return view('pages.kelas.tambah_kelas')->with([
