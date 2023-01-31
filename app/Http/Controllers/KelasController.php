@@ -49,9 +49,10 @@ class KelasController extends Controller
 
         if (count($subset) > 0) {
             // dd(count($subset));
-            $subset->map(function ($sub) {
-                return $siswa = Siswa::where('id', '!=', $sub)->where('status_siswa', 0)->get();
-            });
+            // $subset->map(function ($sub) {
+            //     return $siswa = Siswa::where('id', '!=', $sub)->get();
+            // });
+            $siswa = Siswa::whereNotIn('id', $subset)->where('status_siswa', 0)->get();
             
         } else {
             $siswa = Siswa::where('status_siswa', 0)->get(); 
