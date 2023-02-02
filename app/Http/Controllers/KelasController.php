@@ -131,14 +131,43 @@ class KelasController extends Controller
     public function edit($id)
     {
         // dd($id);
-        $data = Kelas::find($id);
-        $detail_kelas = DetailKelas::where("id_kelas", $id)->get();
+        $data = Kelas::where("id", $id)->get();
+      
+        $subsetData = $data->map(function ($data) {
+            return $data->id;
+        });
+        $detail_kelas = DetailKelas::whereNotIn("id_kelas", $subsetData)->get();
+        // dd($detail_kelas);
+
+        $subset = $detail_kelas->map(function ($detail_kelas) {
+            return $detail_kelas->id_siswa;
+        });
+        // dd($subset);
+
+        $siswa = array();
+
+        if (count($subset) > 0) {
+            // dd(count($subset));
+            // $subset->map(function ($sub) {
+            //     return $siswa = Siswa::where('id', '!=', $sub)->get();
+            // });
+            $siswa = Siswa::whereNotIn('id', $subset)->where('status_siswa', 0)->get();
+            // dd($siswa)
+            
+        } else {
+            $siswa = Siswa::where('status_siswa', 0)->get(); 
+        }
+
+        // dd($siswa);
+        
+   
+        
         return view('pages.kelas.ubah_kelas')->with([
             'user' => Auth::user(),
             'guru' => Guru::all(),
-            'siswa' => Siswa::all(),
+            'siswa' => $siswa,
             'data' => Kelas::find($id),
-            'detail_kelas' => $detail_kelas,
+            'detail_kelas' => DetailKelas::where("id_kelas", $id)->get(),
         ]);
     }
 

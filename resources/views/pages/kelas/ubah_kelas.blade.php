@@ -69,7 +69,7 @@
                     @foreach ($detail_kelas as $no => $hasil)
                     <tr>
                         {{-- @dd($no) --}}
-                        <td>{{ $no + 1 }}</td>
+                        <td id="number">{{ $no + 1 }}</td>
                         <td>
                             <div class="form-group">
                                 <select class="form-control id_siswa" id="id_siswa" name="id_siswa">
@@ -101,9 +101,9 @@
 
 <script>
     $(document).ready(function () {
-        let baris = 1
-        // const data = <?php echo json_encode($detail_kelas); ?>;
-        // console.log(data);
+        const data = <?php echo json_encode($detail_kelas); ?>;
+        let baris = parseInt(data?.length)
+;
 
         $(document).on('click', '#tambah', function () {
             baris = baris + 1
@@ -119,10 +119,11 @@
         
 
         $(document).on('click', '#hapus', function () {
-            console.log($(this));
-            let hapus = $(this).data('row')
-            console.log(hapus);
-            $("#" + hapus).remove();
+            // console.log($(this));
+            // let hapus = $(this).data('row')
+            // console.log("test", hapus);
+            // $("#" + hapus).remove();
+            $(this).closest('tr').remove();
         });
 
         $('#hapus').click(function() {
