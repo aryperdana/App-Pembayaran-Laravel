@@ -24,21 +24,21 @@ class LaporanArusKasController extends Controller
     {
         // dd($request);
         $key = $request->key;
+        $bulan = $request->bulan;
         $q = $request->id_jenis_tagihan;
         $jenis_tagihan = JenisTagihan::get();
         if (Auth::user()->level == 1) {
             if ($request->start_date || $request->end_date) {
-                $data = DetailTagihanSPP::whereHas('siswa', function($query) use($key) {
+                $data = DetailTagihanSPP::where("bulan", $bulan)->whereHas('siswa', function($query) use($key) {
                     $query->where('nama_siswa', 'LIKE', '%'. $key .'%');
                 })->get();
-
                 $sum = $data->sum('bayar');
         
             } else {
-                $data = DetailTagihanSPP::whereHas('siswa', function($query) use($key) {
-                    $query->where('nama_siswa', 'LIKE', '%'. $key .'%');  
-                })->whereHas('jenisTagihan', function($query) use($q) {$query->where('id_jenis_tagihan', 'LIKE', '%'. $q .'%');})->get();
-                // dd($data);
+                
+                $data = DetailTagihanSPP::whereHas("tagihanSpp", function($query) use($bulan) {$query->where('bulan',  $bulan);})
+                ->whereHas('siswa', function($query) use($key) {$query->where('nama_siswa', 'LIKE', '%'. $key .'%');})
+                ->whereHas('jenisTagihan', function($query) use($q) {$query->where('id_jenis_tagihan', 'LIKE', '%'. $q .'%');})->get();
                 $sum = $data->sum('bayar');
           
             }

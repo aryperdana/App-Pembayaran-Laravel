@@ -31,7 +31,7 @@
                 <th scope="col" class="text-center">NIS</th>
                 <th scope="col" class="text-center">Jenis Tagihan</th>
                 <th scope="col" class="text-center">Harga</th>
-                <th scope="col" class="text-center">Bayar</th>
+                <th scope="col" class="text-center">Cicilan</th>
                 <th scope="col" class="text-center">Aksi</th>
                 </tr>
             </thead>
@@ -97,6 +97,11 @@
                     </td>
                 </tr>
                 @endforeach
+                <tr>
+                    <th colspan="9" class="text-right">Total Tunggakan</th>
+                    <th id="totalTunggakan">0</th>
+                    <th></th>
+                </tr>
             </tbody>
         </table>
     </div>  
@@ -184,17 +189,43 @@
 
                     }).get();
                     
-
                     const start = parseInt(searchIDs.length - 1)
                     console.log("data", searchIDs);
                     console.log("length", start);
                     searchIDs.splice(start, 1)
                     console.log("cek", searchIDs);
                     idSelected.splice(0, idSelected.length, ...searchIDs);
+                    console.log("test bos",idSelected);
+                    const mapDataSelected = idSelected.map((val) => {
+                        const dataSelected = dataSiswa.find((res) => parseInt(res.id) === parseInt(val))
+                        return {
+                            kode_kelas : dataSelected?.tagihan_spp?.kelas?.kode_kelas,
+                            tahun_ajaran : dataSelected?.tagihan_spp?.kelas?.tahun_ajaran,
+                            bulan : dataSelected?.tagihan_spp?.bulan === "1" ? "Janurari" :
+                            dataSelected?.tagihan_spp?.bulan === "2" ? "Februari" :
+                            dataSelected?.tagihan_spp?.bulan === "3" ? "Maret" :
+                            dataSelected?.tagihan_spp?.bulan === "4" ? "April" :
+                            dataSelected?.tagihan_spp?.bulan === "5" ? "May" :
+                            dataSelected?.tagihan_spp?.bulan === "6" ? "Juni" :
+                            dataSelected?.tagihan_spp?.bulan === "7" ? "Juli" : 
+                            dataSelected?.tagihan_spp?.bulan === "8" ? "Agustus" : 
+                            dataSelected?.tagihan_spp?.bulan === "9" ? "September" : 
+                            dataSelected?.tagihan_spp?.bulan === "10" ? "Okteber" :
+                            dataSelected?.tagihan_spp?.bulan === "11" ? "November" : "Desember" ,
+                            semester : dataSelected?.tagihan_spp?.semester,
+                            nama_siswa : dataSelected?.siswa?.nama_siswa,
+                            nama_jenis_tagihan: dataSelected?.jenis_tagihan?.nama_jenis_tagihan,
+                            harga : dataSelected.harga,
+                            bayar : $("#" + val).val()
+                        }
+                    })
+                    const sum = mapDataSelected.reduce((acc, {bayar}) => parseInt(acc) + parseInt(bayar),0)
+
+                    console.log("map ni", mapDataSelected);
+                    $("#totalTunggakan").html(sum);
 
                 } else {
                     var selectedValue = $(el).val();
-                
                     $.ajax({
                         type: "get",
                         dataType:"json",
@@ -210,7 +241,7 @@
                     });
                 }
                
-            }
+            } 
 
         });
 
@@ -249,6 +280,7 @@
 
         console.log("mapDataSelected", mapDataSelected);
         var newtr = '';
+        const sumModal = mapDataSelected.reduce((acc, {bayar}) => parseInt(acc) + parseInt(bayar),0)
         
         for (i = 0; i < mapDataSelected.length; i++) {
             
@@ -264,6 +296,10 @@
                 newtr += '<td>'+ mapDataSelected[i].bayar + '</td>';
             newtr += '</tr>';
             }
+            newtr += '<tr>';
+                newtr += '<th class="text-right" colspan="8">Total Tunggakan</th>';
+                newtr += '<th>'+ sumModal + '</th>';
+            newtr += '</tr>';
             $('#modal-table tbody').html(newtr);
         console.log("after",mapDataSelected);
 

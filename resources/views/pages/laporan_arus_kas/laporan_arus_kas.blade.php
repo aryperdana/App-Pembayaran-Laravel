@@ -10,17 +10,36 @@
         <div class="col-4">
             <div class="d-flex">
                 <div class="input-group">
-                    <select class="form-control" id="id_jenis_tagihan" name="id_jenis_tagihan">
+                    <select class="form-control mr-3" id="id_jenis_tagihan" name="id_jenis_tagihan" style="width: 300px">
                         <option value="none">Pilih Jenis Tagihan</option>
                         @foreach ($jenis_tagihan as $item)
                             <option value="{{ $item->id }}">{{ $item->nama_jenis_tagihan }}</option>
                         @endforeach
                     </select>
                 </div>
+                <div class="form-group">
+                    <select class="form-control" id="bulan" name="bulan" style="width: 300px">
+                        <option value="none">Pilih Bulan</option>
+                        <option value="1">Januari</option>
+                        <option value="2">Februari</option>
+                        <option value="3">Maret</option>
+                        <option value="4">April</option>
+                        <option value="5">Mei</option>
+                        <option value="6">Juni</option>
+                        <option value="7">Juli</option>
+                        <option value="8">Agustus</option>
+                        <option value="9">September</option>
+                        <option value="10">Oktober</option>
+                        <option value="11">November</option>
+                        <option value="12">Desember</option>
+                    </select>
+                </div>                
                 <button class="btn btn-primary ml-3">Cari</button>
             </div>
         </div>
     </form>
+
+
     {{-- <form action="{{ url('laporan-tunggakan/export/') }}" method="GET"> --}}
         
     {{-- </form> --}}

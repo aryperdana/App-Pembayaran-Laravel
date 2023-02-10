@@ -33,7 +33,7 @@
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" {{ $data->status_siswa == 0 ? "" : "checked"}} id="status_siswa" name="status_siswa" value="{{ $data->status_siswa }}">
                 <label class="form-check-label" for="status_siswa">
-                  Tidak Aktif
+                  Pindah
                 </label>
             </div>
         </div>

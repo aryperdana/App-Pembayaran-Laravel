@@ -32,7 +32,7 @@
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="status_siswa" name="status_siswa">
                 <label class="form-check-label" for="status_siswa">
-                  Tidak Aktif
+                  Pindah
                 </label>
             </div>
         </div>

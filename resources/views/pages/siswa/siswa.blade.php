@@ -54,7 +54,7 @@
                     <td>{{ $hasil->nama_siswa }}</td>
                     <td>{{ $hasil->no_telp }}</td>
                     <td>{{ $hasil->email }}</td>
-                    <td>{{ $hasil->status_siswa == 0 ? "Aktif" : "Tidak Aktif" }}</td>
+                    <td>{{ $hasil->status_siswa == 0 ? "Aktif" : "Pindah" }}</td>
                 </tr>
                 @endforeach
             </tbody>
