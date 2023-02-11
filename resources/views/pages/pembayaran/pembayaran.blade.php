@@ -37,6 +37,9 @@
                 </tr>
             </thead>
             <tbody>
+                <div style="display: none">
+                    {{ $total = 0 }}
+                </div>
                 @foreach ($data as $no => $hasil)
                 <tr>
                     <td>{{ $no + 1 }}</td>
@@ -97,12 +100,13 @@
                     <td>  Rp. {{ number_format((int)$hasil->harga - (int)$hasil->bayar ,0, ',' , '.') }}</td>
                     <td class="text-center">
                         <input type="checkbox" class="check_box" value={{ $hasil->id }}>
-                    </td>0
+                    </td>
+                    <div style="display: none">{{$total += $hasil->bayar}}</div>
                 </tr>
                 @endforeach
                 <tr>
                     <th colspan="10" class="text-right">Total Tunggakan</th>
-                    <th id="totalTunggakan">0</th>
+                    <th id="totalTunggakan">{{ $total }}</th>
                     <th></th>
                 </tr>
             </tbody>
@@ -433,8 +437,12 @@
 
     // For example trigger on button clicked, or any time you need
     var payButton = document.getElementById('pay-button');
+
     payButton.addEventListener('click', function () {
       // Trigger snap popup. @TODO: Replace TRANSACTION_TOKEN_HERE with your transaction token
+      const dataSave = [];
+
+      console.log(arr);
 
          idSelected.map((val) => {
             $.ajax({
@@ -442,56 +450,59 @@
                 dataType:"json",
                 url: "{{ route('detail-tagihan-spp.index') }}",
                 success: function (res) {
-                    console.log(val, res);
+                    // console.log(val, res);
                     const data = res.tagihan.find((item) => parseInt(item.id) === parseInt(val))
-                    const dataObj = {...data,  bayar : $("#" + val).val()}
-                    arr.splice(0, 0, dataObj)
+                    const dataObj = {...data,  bayar : $("#" + val).val(), tunai : 0}
+                    dataSave.push(dataObj)
                 },
                 error: function (err) {
                     console.log("err",err);
                 }
             });
         })
+        console.log("arr", dataSave);
 
-       const findDaveData = arr.map((val) =>  {
-          const data = dataSiswa.find((item) => item.id === val.id)
-          return {...data, bayar: val.bayar ?? 0 }
-        })
-        console.log("findDaveData", findDaveData);
-        const mapSaveData = findDaveData.map((val) => ({
-            id_tagihan_spp : val.id_tagihan_spp,
-            id_siswa : val.id_siswa,
-            id_jenis_tagihan : val.id_jenis_tagihan,
-            harga : val.harga,
-            status_pembayaran : parseInt(val.bayar) < parseInt(val.harga) ? 0 : 1,
-            tunai : 1,
-            lainnya: val.lainnya,
-            tenggat: val.tenggat,
-            bank_transfer: null,
-            bayar: val.bayar
-        }))
-         console.log(mapSaveData, "test");
+    //    const findDaveData = arr.map((val) =>  {
+    //       const data = dataSiswa.find((item) => item.id === val.id)
+    //       return {...data, bayar: val.bayar ?? 0 }
+    //     })
+    //     console.log("findDaveData", findDaveData);
+    //     const mapSaveData = findDaveData.map((val) => ({
+    //         id_tagihan_spp : val.id_tagihan_spp,
+    //         id_siswa : val.id_siswa,
+    //         id_jenis_tagihan : val.id_jenis_tagihan,
+    //         harga : val.harga,
+    //         status_pembayaran : parseInt(val.bayar) < parseInt(val.harga) ? 0 : 1,
+    //         tunai : 1,
+    //         lainnya: val.lainnya,
+    //         tenggat: val.tenggat,
+    //         bank_transfer: null,
+    //         bayar: val.bayar
+    //     }))
        
+// console.log("siswa", dataSiswa);
 
 
-
-    //   const findDaveData = arr.map((val) => val.id_jenis_tagihan ? dataSiswa.find((item) => item.id === val.id) : "")
-    //   const mapSaveData = mapDataSelected.map((val) => ({
-    //     id_tagihan_spp : val.id_tagihan_spp,
-    //     id_siswa : val.id_siswa,
-    //     id_jenis_tagihan : val.id_jenis_tagihan,
-    //     harga : val.harga,
-    //     status_pembayaran : parseInt($("#" + val.id).val()) < parseInt(val.harga) ? 0 : 1,
-    //     tunai : 0,
-    //     lainnya: val.lainnya,
-    //     tenggat: val.tenggat,
-    //     bayar : $("#" + val.id).val()
-    //   }))
+//       const findDaveData = arr.map((val) => val.id ? dataSiswa.find((item) => item.id === val.id) : "")
+//       const mapSaveData = arr.map((val) => ({
+//         id_tagihan_spp : val.id_tagihan_spp,
+//         id_siswa : val.id_siswa,
+//         id_jenis_tagihan : val.id_jenis_tagihan,
+//         harga : val.harga,
+//         status_pembayaran : parseInt($("#" + val.id).val()) < parseInt(val.harga) ? 0 : 1,
+//         tunai : 0,
+//         lainnya: val.lainnya,
+//         tenggat: val.tenggat,
+//         bayar : $("#" + val.id).val()
+//       }))
     //   console.log(mapSaveData);
-
-      console.log(findDaveData);
-      
-      const mapDeleteData = findDaveData.map((val) => val.id)
+    // console.log(mapSaveData, "test");
+       
+    setTimeout(() => {
+        
+        
+        const mapDeleteData = dataSave.map((val) => val.id)
+      console.log("deleteId", mapDeleteData);
 
       $.ajax({
             type: "post",
@@ -500,21 +511,23 @@
                 "first_name" : dataSiswa[0].siswa.nama_siswa,
                 "email" : dataSiswa[0].siswa.email,
                 "phone" : dataSiswa[0].siswa.no_telp,
-                    detail : arr.map((val) => ({
+                "detail" : dataSave.map((val) => {
+                    console.log("detail", val);
+                    return({
                         "id" : val.id,
-                        "price" : $("#" + val.id).val(),
+                        "price" : parseInt(val?.bayar),
                         "name" : val.id_jenis_tagihan ? dataSiswa.find((item) => item.jenis_tagihan.id === val.id_jenis_tagihan).jenis_tagihan.nama_jenis_tagihan : "",
                         "quantity" : 1,
-                    })),
+                    })}),
                     "_token" : "{{ csrf_token() }}"
                 },
-            success: function (res) {
-                window.snap.pay(res, {
-                    onSuccess: function(result){
-                    /* You may add your own implementation here */
-                    alert("payment success!"); 
-                    console.log(result?.va_numbers[0].bank);
-                    const detailSave = mapSaveData.map(val => ({...val, bank_transfer:result?.va_numbers[0].bank})) 
+                success: function (res) {
+                    window.snap.pay(res, {
+                        onSuccess: function(result){
+                            /* You may add your own implementation here */
+                            alert("payment success!"); 
+                            console.log(result?.va_numbers[0].bank);
+                    const detailSave = dataSave.map(val => ({...val, bank_transfer:result?.va_numbers[0].bank})) 
                     console.log("save", detailSave);
                     $.ajax({
                         type: "post",
@@ -529,29 +542,30 @@
                             location.reload();
                         },
                         error: function (err) {
-                        console.log("err",err);
+                            console.log("err",err);
                         }
                     });
-                    },
+                },
                     onPending: function(result){
-                    /* You may add your own implementation here */
-                    alert("wating your payment!"); console.log(result);
+                        /* You may add your own implementation here */
+                        alert("wating your payment!"); console.log(result);
                     },
                     onError: function(result){
-                    /* You may add your own implementation here */
-                    alert("payment failed!"); console.log(result);
+                        /* You may add your own implementation here */
+                        alert("payment failed!"); console.log(result);
                     },
                     onClose: function(){
-                    /* You may add your own implementation here */
+                        /* You may add your own implementation here */
                     alert('you closed the popup without finishing the payment');
-                    }
-                })
-            },
-            error: function (err) {
+                }
+            })
+        },
+        error: function (err) {
                 console.error(err);
             }
         });
-      // customer will be redirected after completing payment pop-up
+    }, 500);
+        // customer will be redirected after completing payment pop-up
     });
-</script>
-@endsection
+    </script>
+    @endsection
