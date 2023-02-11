@@ -32,6 +32,7 @@
                 <th scope="col" class="text-center">Jenis Tagihan</th>
                 <th scope="col" class="text-center">Harga</th>
                 <th scope="col" class="text-center">Cicilan</th>
+                <th scope="col" class="text-center">Sisa Bayar</th>
                 <th scope="col" class="text-center">Aksi</th>
                 </tr>
             </thead>
@@ -85,20 +86,22 @@
                     <td>{{ $hasil->siswa->nis }}</td>
                     <td>{{ $hasil->jenisTagihan->nama_jenis_tagihan }}</td>
                     <td>Rp. {{ number_format($hasil->harga,0, ',' , '.') }}</td>
+                  
                     <td class="text-center" style="width: 150px">
-                        <input type="text" class="form-control" name="bayar" id={{ $hasil->id }} @if ($hasil->bayar)
+                        <input type="number" min="0" max="20000" class="form-control" oninput="this.value = this.value > {{$hasil->harga}} ? {{$hasil->harga}} : Math.abs(this.value)" name="bayar" id={{ $hasil->id }} @if ($hasil->bayar)
                             value={{ $hasil->bayar }}
                         @else
                             value="0"
                         @endif >
                     </td>
+                    <td>  Rp. {{ number_format((int)$hasil->harga - (int)$hasil->bayar ,0, ',' , '.') }}</td>
                     <td class="text-center">
                         <input type="checkbox" class="check_box" value={{ $hasil->id }}>
-                    </td>
+                    </td>0
                 </tr>
                 @endforeach
                 <tr>
-                    <th colspan="9" class="text-right">Total Tunggakan</th>
+                    <th colspan="10" class="text-right">Total Tunggakan</th>
                     <th id="totalTunggakan">0</th>
                     <th></th>
                 </tr>
@@ -157,7 +160,7 @@
     </div>
   </div>
 
-    
+     bayar : $("#" + val).val()
     {{-- <ul class="pagination pagination m-0">
         <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
         <li class="page-item"><a class="page-link" href="#">1</a></li>
@@ -174,6 +177,7 @@
    
 
     const user = <?php echo json_encode($user); ?>;
+
 
      
     $('.check_box').change(function check(){
@@ -231,9 +235,66 @@
                         dataType:"json",
                         url: "{{ route('detail-tagihan-spp.index') }}",
                         success: function (res) {
-                            const data = res.tagihan.find((val) => parseInt(val.id) === parseInt(selectedValue))
-                            const end = arr.length - 1;
-                            arr.splice(0, end, data)
+                             var searchIDs = $('input:checked').map(function(){
+
+                                return $(this).val();
+
+                                }).get();
+
+                                
+                                const start = parseInt(searchIDs.length - 1)
+                                searchIDs.splice(start, 1)
+                                console.log(searchIDs);
+                                idSelected.splice(0, idSelected.length, ...searchIDs);
+
+                                const mapDataSelected = idSelected.map((val) => {
+                                    const dataSelected = dataSiswa.find((res) => parseInt(res.id) === parseInt(val))
+                                    return {
+                                        kode_kelas : dataSelected?.tagihan_spp?.kelas?.kode_kelas,
+                                        tahun_ajaran : dataSelected?.tagihan_spp?.kelas?.tahun_ajaran,
+                                        bulan : dataSelected?.tagihan_spp?.bulan === "1" ? "Janurari" :
+                                        dataSelected?.tagihan_spp?.bulan === "2" ? "Februari" :
+                                        dataSelected?.tagihan_spp?.bulan === "3" ? "Maret" :
+                                        dataSelected?.tagihan_spp?.bulan === "4" ? "April" :
+                                        dataSelected?.tagihan_spp?.bulan === "5" ? "May" :
+                                        dataSelected?.tagihan_spp?.bulan === "6" ? "Juni" :
+                                        dataSelected?.tagihan_spp?.bulan === "7" ? "Juli" : 
+                                        dataSelected?.tagihan_spp?.bulan === "8" ? "Agustus" : 
+                                        dataSelected?.tagihan_spp?.bulan === "9" ? "September" : 
+                                        dataSelected?.tagihan_spp?.bulan === "10" ? "Okteber" :
+                                        dataSelected?.tagihan_spp?.bulan === "11" ? "November" : "Desember" ,
+                                        semester : dataSelected?.tagihan_spp?.semester,
+                                        nama_siswa : dataSelected?.siswa?.nama_siswa,
+                                        nama_jenis_tagihan: dataSelected?.jenis_tagihan?.nama_jenis_tagihan,
+                                        harga : dataSelected.harga,
+                                        bayar : $("#" + val).val()
+                                    }
+                                })
+                                const sum = mapDataSelected.reduce((acc, {bayar}) => parseInt(acc) + parseInt(bayar),0)
+
+                                console.log("map ni", mapDataSelected);
+                                $("#totalTunggakan").html(sum);
+                            // const data = res.tagihan.find((val) => parseInt(val.id) === parseInt(selectedValue))
+                            // console.log("data",data);
+                            // const end = parseInt(arr.length) - 1
+                            // arr.splice(0, end, data)
+                            // const findDaveData = arr.map((val) => val.id_jenis_tagihan ? dataSiswa.find((item) => item.id === val.id) : "")
+                            // const mapSaveData = findDaveData.map((val) => ({
+                            //     id_tagihan_spp : val.id_tagihan_spp,
+                            //     id_siswa : val.id_siswa,
+                            //     id_jenis_tagihan : val.id_jenis_tagihan,
+                            //     harga : val.harga,
+                            //     status_pembayaran : parseInt($("#" + val.id).val()) < parseInt(val.harga) ? 0 : 1,
+                            //     tunai : 0,
+                            //     lainnya: val.lainnya,
+                            //     tenggat: val.tenggat,
+                            //     bayar : $("#" + val.id).val()
+                            // }))
+
+                            // const sum = mapSaveData.reduce((acc, {bayar}) => parseInt(acc) + parseInt(bayar),0)
+
+                            // console.log("map ni", mapSaveData);
+                            // $("#totalTunggakan").html(sum);                 
                         },
                         error: function (err) {
                             console.log("err",err);
@@ -246,6 +307,10 @@
         });
 
     });
+
+//     $( $("#" + val) ).change(function() {
+//   // Check input( $( this ).val() ) for validity here
+//     });
 
     
 
@@ -371,18 +436,58 @@
     payButton.addEventListener('click', function () {
       // Trigger snap popup. @TODO: Replace TRANSACTION_TOKEN_HERE with your transaction token
 
-      const findDaveData = arr.map((val) => val.id_jenis_tagihan ? dataSiswa.find((item) => item.id === val.id) : "")
-      const mapSaveData = findDaveData.map((val) => ({
-        id_tagihan_spp : val.id_tagihan_spp,
-        id_siswa : val.id_siswa,
-        id_jenis_tagihan : val.id_jenis_tagihan,
-        harga : val.harga,
-        status_pembayaran : parseInt($("#" + val.id).val()) < parseInt(val.harga) ? 0 : 1,
-        tunai : 0,
-        lainnya: val.lainnya,
-        tenggat: val.tenggat,
-        bayar : $("#" + val.id).val()
-      }))
+         idSelected.map((val) => {
+            $.ajax({
+                type: "get",
+                dataType:"json",
+                url: "{{ route('detail-tagihan-spp.index') }}",
+                success: function (res) {
+                    console.log(val, res);
+                    const data = res.tagihan.find((item) => parseInt(item.id) === parseInt(val))
+                    const dataObj = {...data,  bayar : $("#" + val).val()}
+                    arr.splice(0, 0, dataObj)
+                },
+                error: function (err) {
+                    console.log("err",err);
+                }
+            });
+        })
+
+       const findDaveData = arr.map((val) =>  {
+          const data = dataSiswa.find((item) => item.id === val.id)
+          return {...data, bayar: val.bayar ?? 0 }
+        })
+        console.log("findDaveData", findDaveData);
+        const mapSaveData = findDaveData.map((val) => ({
+            id_tagihan_spp : val.id_tagihan_spp,
+            id_siswa : val.id_siswa,
+            id_jenis_tagihan : val.id_jenis_tagihan,
+            harga : val.harga,
+            status_pembayaran : parseInt(val.bayar) < parseInt(val.harga) ? 0 : 1,
+            tunai : 1,
+            lainnya: val.lainnya,
+            tenggat: val.tenggat,
+            bank_transfer: null,
+            bayar: val.bayar
+        }))
+         console.log(mapSaveData, "test");
+       
+
+
+
+    //   const findDaveData = arr.map((val) => val.id_jenis_tagihan ? dataSiswa.find((item) => item.id === val.id) : "")
+    //   const mapSaveData = mapDataSelected.map((val) => ({
+    //     id_tagihan_spp : val.id_tagihan_spp,
+    //     id_siswa : val.id_siswa,
+    //     id_jenis_tagihan : val.id_jenis_tagihan,
+    //     harga : val.harga,
+    //     status_pembayaran : parseInt($("#" + val.id).val()) < parseInt(val.harga) ? 0 : 1,
+    //     tunai : 0,
+    //     lainnya: val.lainnya,
+    //     tenggat: val.tenggat,
+    //     bayar : $("#" + val.id).val()
+    //   }))
+    //   console.log(mapSaveData);
 
       console.log(findDaveData);
       
