@@ -90,11 +90,11 @@
                     <td>{{ $hasil->jenisTagihan->nama_jenis_tagihan }}</td>
                     <td>Rp. {{ number_format($hasil->harga,0, ',' , '.') }}</td>
                   
-                    <td class="text-center" style="width: 150px">
+                    <td class="text-center" style="width: 250px">
                         <input type="number" min="0" max="20000" class="form-control" oninput="this.value = this.value > {{$hasil->harga}} ? {{$hasil->harga}} : Math.abs(this.value)" name="bayar" id={{ $hasil->id }} @if ($hasil->bayar)
-                            value={{ $hasil->bayar }}
+                            value={{ (int)$hasil->harga - (int)$hasil->bayar }}
                         @else
-                            value="0"
+                            value={{ (int)$hasil->harga }}
                         @endif >
                     </td>
                     <td>  Rp. {{ number_format((int)$hasil->harga - (int)$hasil->bayar ,0, ',' , '.') }}</td>
