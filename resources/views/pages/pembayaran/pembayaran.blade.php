@@ -190,15 +190,9 @@
             if($(el).is(':checked'))
             { 
                 if (user.id_siswa === 0) {
-                    var searchIDs = $('input:checked').map(function(){
+                    var selectedValue = $(el).val();
+                    idSelected.push(selectedValue);
 
-                    return $(this).val();
-
-                    }).get();
-                    
-                    const start = parseInt(searchIDs.length - 1)
-                    searchIDs.splice(start, 1)
-                    idSelected.splice(0, idSelected.length, ...searchIDs);
                     const mapDataSelected = idSelected.map((val) => {
                         const dataSelected = dataSiswa.find((res) => parseInt(res.id) === parseInt(val))
                         return {
@@ -219,12 +213,12 @@
                             nama_siswa : dataSelected?.siswa?.nama_siswa,
                             nama_jenis_tagihan: dataSelected?.jenis_tagihan?.nama_jenis_tagihan,
                             harga : dataSelected.harga,
-                            bayar : $("#" + val).val()
+                            bayar : $("#" + val).val(),
+                            id : val,
                         }
                     })
                     const sum = mapDataSelected.reduce((acc, {bayar}) => parseInt(acc) + parseInt(bayar),0)
-
-                    console.log("map ni", mapDataSelected);
+                    dataMap.splice(0, dataMap.length, ...mapDataSelected)
                     $("#totalTunggakan").html(sum);
 
                 } else {
@@ -264,8 +258,9 @@
             } else {
                 var selectedValue = $(el).val();
                 const filter = idSelected.filter(val => val !== selectedValue)
+                
 
-                idSelected.splice(0, selectedData.length, ...filter)
+                idSelected.splice(0, idSelected.length, ...filter)
                 if (idSelected.length < 1) {
                     dataMap.splice(0, dataMap.length, ...[])
                     $("#totalTunggakan").html(0);  
@@ -284,50 +279,22 @@
     
 
     $('#pay-tunai-button').click(function (e) { 
-        console.log("idSelected", idSelected);
- 
-        
-        const mapDataSelected = idSelected.map((val) => {
-            const dataSelected = dataSiswa.find((res) => parseInt(res.id) === parseInt(val))
-            return {
-                kode_kelas : dataSelected?.tagihan_spp?.kelas?.kode_kelas,
-                tahun_ajaran : dataSelected?.tagihan_spp?.kelas?.tahun_ajaran,
-                bulan : dataSelected?.tagihan_spp?.bulan === "1" ? "Janurari" :
-                dataSelected?.tagihan_spp?.bulan === "2" ? "Februari" :
-                dataSelected?.tagihan_spp?.bulan === "3" ? "Maret" :
-                dataSelected?.tagihan_spp?.bulan === "4" ? "April" :
-                dataSelected?.tagihan_spp?.bulan === "5" ? "May" :
-                dataSelected?.tagihan_spp?.bulan === "6" ? "Juni" :
-                dataSelected?.tagihan_spp?.bulan === "7" ? "Juli" : 
-                dataSelected?.tagihan_spp?.bulan === "8" ? "Agustus" : 
-                dataSelected?.tagihan_spp?.bulan === "9" ? "September" : 
-                dataSelected?.tagihan_spp?.bulan === "10" ? "Okteber" :
-                dataSelected?.tagihan_spp?.bulan === "11" ? "November" : "Desember" ,
-                semester : dataSelected?.tagihan_spp?.semester,
-                nama_siswa : dataSelected?.siswa?.nama_siswa,
-                nama_jenis_tagihan: dataSelected?.jenis_tagihan?.nama_jenis_tagihan,
-                harga : dataSelected.harga,
-                bayar : $("#" + val).val()
-            }
-        })
-
-
-        console.log("mapDataSelected", mapDataSelected);
         var newtr = '';
-        const sumModal = mapDataSelected.reduce((acc, {bayar}) => parseInt(acc) + parseInt(bayar),0)
+        const sumModal = dataMap.reduce((acc, {bayar}) => parseInt(acc) + parseInt(bayar),0)
+        console.log(sumModal);
         
-        for (i = 0; i < mapDataSelected.length; i++) {
+        for (i = 0; i < dataMap.length; i++) {
             
             newtr += '<tr>';
                 newtr += '<td>'+ parseInt(i + 1) + '</td>';
-                newtr += '<td>'+ mapDataSelected[i].kode_kelas + '</td>';
-                newtr += '<td>'+ mapDataSelected[i].tahun_ajaran + '</td>';
-                newtr += '<td>'+ mapDataSelected[i].bulan + '</td>';
-                newtr += '<td>'+ mapDataSelected[i].semester + '</td>';
-                newtr += '<td>'+ mapDataSelected[i].nama_siswa + '</td>';
-                newtr += '<td>'+ mapDataSelected[i].nama_jenis_tagihan + '</td>';
-                newtr += '<td>'+ mapDataSelected[i].harga + '</td>';
-                newtr += '<td>'+ mapDataSelected[i].bayar + '</td>';
+                newtr += '<td>'+ dataMap[i].kode_kelas + '</td>';
+                newtr += '<td>'+ dataMap[i].tahun_ajaran + '</td>';
+                newtr += '<td>'+ dataMap[i].bulan + '</td>';
+                newtr += '<td>'+ dataMap[i].semester + '</td>';
+                newtr += '<td>'+ dataMap[i].nama_siswa + '</td>';
+                newtr += '<td>'+ dataMap[i].nama_jenis_tagihan + '</td>';
+                newtr += '<td>'+ dataMap[i].harga + '</td>';
+                newtr += '<td>'+ dataMap[i].bayar + '</td>';
             newtr += '</tr>';
             }
             newtr += '<tr>';
@@ -335,17 +302,16 @@
                 newtr += '<th>'+ sumModal + '</th>';
             newtr += '</tr>';
             $('#modal-table tbody').html(newtr);
-        console.log("after",mapDataSelected);
 
-        idSelected.map((val) => {
+        dataMap.map((val) => {
             $.ajax({
                 type: "get",
                 dataType:"json",
                 url: "{{ route('detail-tagihan-spp.index') }}",
                 success: function (res) {
                     console.log(val, res);
-                    const data = res.tagihan.find((item) => parseInt(item.id) === parseInt(val))
-                    const dataObj = {...data,  bayar : $("#" + val).val()}
+                    const data = res.tagihan.find((item) => parseInt(item.id) === parseInt(val.id))
+                    const dataObj = {...data,  bayar : $("#" + val.id).val()}
                     arr.splice(0, 0, dataObj)
                 },
                 error: function (err) {
